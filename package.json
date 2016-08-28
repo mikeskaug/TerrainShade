@@ -1,0 +1,22 @@
+{
+  "name": "terrain-shade",
+  "version": "1.0.0",
+  "description": "web application for viewing areas of light and shade in a 3D terrain",
+  "main": "src/app.js",
+  "scripts": {
+    "bundle": "webpack --progress --colors --watch",
+    "start": "webpack-dev-server -d --progress"
+  },
+  "author": "@mike_skaug",
+  "license": "ISC",
+  "dependencies": {
+    "three": "^0.80.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.14.0",
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.15.0"
+  }
+}
