@@ -3,7 +3,7 @@ import Trackballcontrols from 'three-trackballcontrols';
 
 import { fetchElevationTile, getElevationsFromRGBA, arrayMean, arrayRange ,getTileDimensions } from './utils';
 
-const lon = -105.3045;
+const lon = -105.250;
 const lat = 39.9266;
 const zoom = 13;
 
@@ -25,7 +25,6 @@ let renderTerrain = (elevations) => {
 	let geometry = new THREE.PlaneGeometry(meshSize, meshSize, gridUnits - 1, gridUnits - 1);
 	let meanElevation = arrayMean(elevations);
 	let tileDimensions = getTileDimensions(lon, lat, zoom);
-	let unitLength = meshSize / gridUnits;
 	let meshUnitsPerMeter = meshSize / tileDimensions.y;
 	
 	for (var i = 0, l = geometry.vertices.length; i < l; i++) {
