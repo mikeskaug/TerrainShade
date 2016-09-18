@@ -67,4 +67,15 @@ export var getTileDimensions = (lon, lat, zoom) => {
     return tileDimensions;
 };
 
+export var png2Array = (png) => {
+    // converts png object (see https://github.com/arian/pngjs) into array of pixel data
+    let dataArray = [];
+    _.range(png.getHeight()).map(row => {
+        _.range(png.getWidth()).map(col => {
+            png.getPixel(col, row).map(val => dataArray.push(val));
+        });    
+    });
+    return dataArray;
+};
+
 

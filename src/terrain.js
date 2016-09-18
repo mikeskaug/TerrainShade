@@ -1,7 +1,9 @@
 let THREE = require( 'three' );
+let PNG = require('png.js');
+import _ from 'underscore';
 import Trackballcontrols from 'three-trackballcontrols';
 
-import { fetchElevationTile, getElevationsFromRGBA, arrayMean, arrayRange ,getTileDimensions } from './utils';
+import { fetchElevationTile, getElevationsFromRGBA, arrayMean, arrayRange ,getTileDimensions, png2Array } from './utils';
 
 class Terrain {
     constructor () {
@@ -23,38 +25,25 @@ class Terrain {
     renderTile (lon, lat) {
         this.getElevationData(lon, lat)
             .then( elevations => {
-                this.addTerrainToScene(elevations);
+                this.addTerrainToScene(elevations, lon, lat);
                 this.renderScene();
             });
 	
     }
     
-    getElevationData (lon, lat) {
-        let reader = new FileReader();
-        reader.addEventListener("loadend", function() {
-            let rawTileData = new Uint16Array(reader.result);
-        });
-        
+    getElevationData (lon, lat) {        
         let fetchResponse = fetchElevationTile(lon, lat, this.zoom);
         
-        return fetchResponse.then( response => { return response.blob() })
-            .then( blob => {
-                reader.readAsArrayBuffer(blob);
-                let url = URL.createObjectURL(blob);
-                let img = document.createElement("img");
-                img.src = url;
-                return new Promise( (resolve, reject) => {img.onload = resolve(img);})
+        return fetchResponse.then( response => { return response.arrayBuffer() })
+            .then( arrayBuffer => {
+                let pngReader = new PNG(arrayBuffer);
+                return new Promise( (resolve, reject) => {
+                    pngReader.parse( (err, png) => { resolve(png); } )
+                });
             })
-            .then( img => {
-                let canvas = document.createElement("canvas");
-                let ctx = canvas.getContext("2d");
-                canvas.height = img.height;
-                canvas.width = img.width;
-                ctx.drawImage(img, 0, 0, img.height, img.width);
-                    
-                var map = ctx.getImageData(0,0,img.width,img.height);
-                var imdata = map.data;
-                let elevations = getElevationsFromRGBA(imdata);
+            .then( png => {
+                let pixelDataArray = png2Array(png);
+                let elevations = getElevationsFromRGBA(pixelDataArray);
                 return elevations;
             });
     }
@@ -64,31 +53,31 @@ class Terrain {
         this.scene.add(axes);
     }
 
-    addTerrainToScene (elevations)  {
+    addTerrainToScene (elevations, lon, lat)  {
         let gridUnits = Math.sqrt(elevations.length);
         let meshSize = 60;
-        let geometry = new THREE.PlaneGeometry(meshSize, meshSize, gridUnits - 1, gridUnits - 1);
+        this.geometry = new THREE.PlaneGeometry(meshSize, meshSize, gridUnits - 1, gridUnits - 1);
         let meanElevation = arrayMean(elevations);
-        let tileDimensions = getTileDimensions(lon, lat, zoom);
+        let tileDimensions = getTileDimensions(lon, lat, this.zoom);
         let meshUnitsPerMeter = meshSize / tileDimensions.y;
         
-        for (var i = 0, l = geometry.vertices.length; i < l; i++) {
-            geometry.vertices[i].z = (elevations[i] - meanElevation) * meshUnitsPerMeter;
+        for (var i = 0, l = this.geometry.vertices.length; i < l; i++) {
+            this.geometry.vertices[i].z = (elevations[i] - meanElevation) * meshUnitsPerMeter;
         };
         
-        var material = new THREE.MeshBasicMaterial({
+        this.material = new THREE.MeshBasicMaterial({
             color: 0x000000, 
             wireframe: true
         });
-        let terrain = new THREE.Mesh( geometry, material );
-        this.scene.add( terrain );
+        this.terrain = new THREE.Mesh( this.geometry, this.material );
+        this.scene.add( this.terrain );
     }
     
     renderScene () {
         let render = () => {
             this.controls.update(); 
             requestAnimationFrame( render );
-            this.renderer.render(scene, camera);
+            this.renderer.render(this.scene, this.camera);
         };
         
         render();
