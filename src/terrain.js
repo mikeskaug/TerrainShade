@@ -61,9 +61,9 @@ class Terrain {
         let tileDimensions = getTileDimensions(lon, lat, this.zoom);
         let meshUnitsPerMeter = meshSize / tileDimensions.y;
         
-        for (var i = 0, l = this.geometry.vertices.length; i < l; i++) {
+        _.range(this.geometry.vertices.length).map(i => {
             this.geometry.vertices[i].z = (elevations[i] - meanElevation) * meshUnitsPerMeter;
-        };
+        });
         
         this.material = new THREE.MeshBasicMaterial({
             color: 0x000000, 
