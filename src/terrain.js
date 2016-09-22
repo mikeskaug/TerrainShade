@@ -3,7 +3,13 @@ let PNG = require('png.js');
 import _ from 'underscore';
 import Trackballcontrols from 'three-trackballcontrols';
 
-import { fetchElevationTile, getElevationsFromRGBA, arrayMean, arrayRange ,getTileDimensions, png2Array } from './utils';
+import { fetchElevationTile,
+        fetchImageTile,
+        getElevationsFromRGBA,
+        arrayMean,
+        arrayRange,
+        getTileDimensions,
+        png2Array } from './utils';
 
 class Terrain {
     constructor () {
@@ -26,6 +32,7 @@ class Terrain {
         this.getElevationData(lon, lat)
             .then( elevations => {
                 this.addTerrainToScene(elevations, lon, lat);
+                this.addImageMaterial(lon, lat);
                 this.renderScene();
             });
 	
@@ -71,6 +78,13 @@ class Terrain {
         });
         this.terrain = new THREE.Mesh( this.geometry, this.material );
         this.scene.add( this.terrain );
+    }
+    
+    addImageMaterial (lon, lat) {
+        let loader = new THREE.ImageLoader().load(url, onLoad);
+        let fetchResponse = fetchImageTile(lon, lat, this.zoom);
+        
+        this.texture = new THREE.Texture(image);
     }
     
     renderScene () {

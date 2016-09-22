@@ -1,7 +1,8 @@
 import 'whatwg-fetch';
 import _ from 'underscore';
 
-const baseURL = 'https://terrain-preview.mapzen.com/terrarium';
+const baseElevationURL = 'https://terrain-preview.mapzen.com/terrarium';
+const baseImageURL = 'http://tile.stamen.com/terrain';
 
 export var long2tile = (lon, zoom) => {
     return (Math.floor( (lon + 180) / 360 * Math.pow(2, zoom) ) );
@@ -15,10 +16,18 @@ export var lat2tile = (lat, zoom) => {
 export var fetchElevationTile = (lon, lat, zoom) => {
     let x = long2tile(lon, zoom);
     let y = lat2tile(lat, zoom);
-    let url = baseURL + '/' + zoom + '/' + x + '/' + y + '.png';
+    let url = baseElevationURL + '/' + zoom + '/' + x + '/' + y + '.png';
     
     return fetch(url);
 
+}
+
+export var fetchImageTile = (lon, lat, zoom) => {
+    let x = long2tile(lon, zoom);
+    let y = lat2tile(lat, zoom);
+    let url = baseImageURL + '/' + zoom + '/' + x + '/' + y + '.jpg';
+    
+    return fetch(url);
 }
 
 export var getElevationsFromRGBA = (rgbaData) => {
