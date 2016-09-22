@@ -4,7 +4,7 @@ import _ from 'underscore';
 import Trackballcontrols from 'three-trackballcontrols';
 
 import { fetchElevationTile,
-        fetchImageTile,
+        getImageTileURL,
         getElevationsFromRGBA,
         arrayMean,
         arrayRange,
@@ -19,28 +19,39 @@ class Terrain {
         this.controls = new TrackballControls(this.camera);
         this.zoom = 13;
     }
-    
+
     initScene () {
         this.scene.background = new THREE.Color( 'rgb(255, 255, 255)' );
         this.camera.position.set(20, -80, 500);
-        
+
         this.renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.appendChild( this.renderer.domElement );
     }
-    
+
     renderTile (lon, lat) {
         this.getElevationData(lon, lat)
             .then( elevations => {
-                this.addTerrainToScene(elevations, lon, lat);
-                this.addImageMaterial(lon, lat);
-                this.renderScene();
+                this.createTerrainGeometry(elevations, lon, lat);
+                this.loadImage(lon, lat)
+                    .then( image => {
+                      let texture = new THREE.Texture(image);
+                      this.material = new THREE.MeshBasicMaterial({
+                          color: 0x2194ce,
+                          map: texture
+                      });
+
+                      this.terrain = new THREE.Mesh( this.geometry, this.material );
+                      this.scene.add( this.terrain );
+                      this.addAmbientLight();
+                    })
+                    .then( _ => this.renderScene());
             });
-	
+
     }
-    
-    getElevationData (lon, lat) {        
+
+    getElevationData (lon, lat) {
         let fetchResponse = fetchElevationTile(lon, lat, this.zoom);
-        
+
         return fetchResponse.then( response => { return response.arrayBuffer() })
             .then( arrayBuffer => {
                 let pngReader = new PNG(arrayBuffer);
@@ -54,46 +65,48 @@ class Terrain {
                 return elevations;
             });
     }
-    
+
     addAxes () {
         let axes = new THREE.AxisHelper(100);
         this.scene.add(axes);
     }
 
-    addTerrainToScene (elevations, lon, lat)  {
+    createTerrainGeometry (elevations, lon, lat)  {
         let gridUnits = Math.sqrt(elevations.length);
         let meshSize = 60;
         this.geometry = new THREE.PlaneGeometry(meshSize, meshSize, gridUnits - 1, gridUnits - 1);
         let meanElevation = arrayMean(elevations);
         let tileDimensions = getTileDimensions(lon, lat, this.zoom);
         let meshUnitsPerMeter = meshSize / tileDimensions.y;
-        
+
         _.range(this.geometry.vertices.length).map(i => {
             this.geometry.vertices[i].z = (elevations[i] - meanElevation) * meshUnitsPerMeter;
         });
-        
-        this.material = new THREE.MeshBasicMaterial({
-            color: 0x000000, 
-            wireframe: true
+    }
+
+    loadImage (lon, lat) {
+        let url = getImageTileURL(lon, lat, this.zoom);
+        let loader = new THREE.ImageLoader();
+
+        return new Promise((resolve, reject) => {
+          loader.load(url, (img) => {
+            resolve(img);
+          });
         });
-        this.terrain = new THREE.Mesh( this.geometry, this.material );
-        this.scene.add( this.terrain );
     }
-    
-    addImageMaterial (lon, lat) {
-        let loader = new THREE.ImageLoader().load(url, onLoad);
-        let fetchResponse = fetchImageTile(lon, lat, this.zoom);
-        
-        this.texture = new THREE.Texture(image);
+
+    addAmbientLight () {
+      let light = new THREE.AmbientLight( 0x404040 ); // soft white light
+      this.scene.add( light );
     }
-    
+
     renderScene () {
         let render = () => {
-            this.controls.update(); 
+            this.controls.update();
             requestAnimationFrame( render );
             this.renderer.render(this.scene, this.camera);
         };
-        
+
         render();
     }
 }
