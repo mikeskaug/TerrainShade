@@ -2,7 +2,7 @@ import 'whatwg-fetch';
 import _ from 'underscore';
 
 const baseElevationURL = 'https://terrain-preview.mapzen.com/terrarium';
-const baseImageURL = 'http://tile.stamen.com/terrain';
+const baseImageURL = 'https://a.dyn.tile.stamen.com/terrain';
 
 export var long2tile = (lon, zoom) => {
     return (Math.floor( (lon + 180) / 360 * Math.pow(2, zoom) ) );

@@ -32,19 +32,17 @@ class Terrain {
         this.getElevationData(lon, lat)
             .then( elevations => {
                 this.createTerrainGeometry(elevations, lon, lat);
-                this.loadImage(lon, lat)
-                    .then( image => {
-                      let texture = new THREE.Texture(image);
+                this.loadTexture(lon, lat)
+                    .then( texture => {
                       this.material = new THREE.MeshBasicMaterial({
-                          color: 0x2194ce,
                           map: texture
                       });
 
                       this.terrain = new THREE.Mesh( this.geometry, this.material );
                       this.scene.add( this.terrain );
                       this.addAmbientLight();
-                    })
-                    .then( _ => this.renderScene());
+                      this.renderScene()
+                    });
             });
 
     }
@@ -84,13 +82,13 @@ class Terrain {
         });
     }
 
-    loadImage (lon, lat) {
+    loadTexture (lon, lat) {
         let url = getImageTileURL(lon, lat, this.zoom);
-        let loader = new THREE.ImageLoader();
+        let loader = new THREE.TextureLoader();
 
         return new Promise((resolve, reject) => {
-          loader.load(url, (img) => {
-            resolve(img);
+          loader.load(url, (texture) => {
+            resolve(texture);
           });
         });
     }
