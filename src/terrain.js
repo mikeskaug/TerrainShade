@@ -34,14 +34,16 @@ class Terrain {
                 this.createTerrainGeometry(elevations, lon, lat);
                 this.loadTexture(lon, lat)
                     .then( texture => {
-                      this.material = new THREE.MeshBasicMaterial({
+                      this.material = new THREE.MeshLambertMaterial({
                           map: texture
                       });
 
                       this.terrain = new THREE.Mesh( this.geometry, this.material );
                       this.scene.add( this.terrain );
                       this.addAmbientLight();
-                      this.renderScene()
+                      this.addSunLight();
+                      this.addDirectionalLightHelper(this.sunLight);
+                      this.renderScene();
                     });
             });
 
@@ -67,6 +69,11 @@ class Terrain {
     addAxes () {
         let axes = new THREE.AxisHelper(100);
         this.scene.add(axes);
+    }
+    
+    addDirectionalLightHelper (light) {
+        let directionalLightHelper = new THREE.DirectionalLightHelper(light, 20);
+        this.scene.add(directionalLightHelper);
     }
 
     createTerrainGeometry (elevations, lon, lat)  {
@@ -96,6 +103,13 @@ class Terrain {
     addAmbientLight () {
       let light = new THREE.AmbientLight( 0x404040 ); // soft white light
       this.scene.add( light );
+    }
+    
+    addSunLight () {
+        this.sunLight = new THREE.DirectionalLight( 0xffffff, 1.0 );
+        this.sunLight.position.set( 10, 0, 5 );
+        this.sunLight.castShadow = true;
+        this.scene.add( this.sunLight );
     }
 
     renderScene () {
