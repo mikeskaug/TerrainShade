@@ -16,6 +16,7 @@ class Terrain {
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 1000 );
         this.renderer = new THREE.WebGLRenderer();
+        this.renderer.shadowMap.enabled = true;
         this.controls = new TrackballControls(this.camera);
         this.zoom = 13;
     }
@@ -39,6 +40,8 @@ class Terrain {
                       });
 
                       this.terrain = new THREE.Mesh( this.geometry, this.material );
+                      this.terrain.castShadow = true;
+                      this.terrain.receiveShadow = true;
                       this.scene.add( this.terrain );
                       this.addAmbientLight();
                       this.addSunLight();
@@ -70,7 +73,7 @@ class Terrain {
         let axes = new THREE.AxisHelper(100);
         this.scene.add(axes);
     }
-    
+
     addDirectionalLightHelper (light) {
         let directionalLightHelper = new THREE.DirectionalLightHelper(light, 20);
         this.scene.add(directionalLightHelper);
@@ -104,11 +107,12 @@ class Terrain {
       let light = new THREE.AmbientLight( 0x404040 ); // soft white light
       this.scene.add( light );
     }
-    
+
     addSunLight () {
         this.sunLight = new THREE.DirectionalLight( 0xffffff, 1.0 );
         this.sunLight.position.set( 10, 0, 5 );
         this.sunLight.castShadow = true;
+        this.sunLight.shadowCameraVisible = true;
         this.scene.add( this.sunLight );
     }
 
