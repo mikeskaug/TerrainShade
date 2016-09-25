@@ -6,10 +6,9 @@ import Trackballcontrols from 'three-trackballcontrols';
 import { fetchElevationTile,
         getImageTileURL,
         getElevationsFromRGBA,
-        arrayMean,
-        arrayRange,
-        getTileDimensions,
-        png2Array } from './utils';
+        getTileDimensions} from './tileUtilities';
+
+import { arrayMean, arrayRange, png2Array } from './utils';
 
 class Terrain {
     constructor () {
@@ -27,6 +26,14 @@ class Terrain {
 
         this.renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.appendChild( this.renderer.domElement );
+
+        this.addAmbientLight();
+        this.addSunLight();
+    }
+
+    addHelpers () {
+      this.addDirectionalLightHelper(this.sunLight);
+      this.addAxes();
     }
 
     renderTile (lon, lat) {
@@ -35,17 +42,11 @@ class Terrain {
                 this.createTerrainGeometry(elevations, lon, lat);
                 this.loadTexture(lon, lat)
                     .then( texture => {
-                      this.material = new THREE.MeshLambertMaterial({
-                          map: texture
-                      });
-
+                      this.material = new THREE.MeshLambertMaterial({map: texture});
                       this.terrain = new THREE.Mesh( this.geometry, this.material );
                       this.terrain.castShadow = true;
                       this.terrain.receiveShadow = true;
                       this.scene.add( this.terrain );
-                      this.addAmbientLight();
-                      this.addSunLight();
-                      this.addDirectionalLightHelper(this.sunLight);
                       this.renderScene();
                     });
             });
@@ -110,10 +111,10 @@ class Terrain {
 
     addSunLight () {
         this.sunLight = new THREE.DirectionalLight( 0xffffff, 1.0 );
-        this.sunLight.position.set( 15, 0, 3 );
+        this.sunLight.position.set( 50, 0, 3 );
         this.sunLight.castShadow = true;
         let dLight = 100;
-  			let sLight = dLight * 0.25;
+  			let sLight = dLight * 0.5;
   			this.sunLight.shadow.camera.left = -sLight;
   			this.sunLight.shadow.camera.right = sLight;
   			this.sunLight.shadow.camera.top = sLight;
