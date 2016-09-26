@@ -16,6 +16,7 @@ class Terrain {
         this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 1000 );
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.shadowMap.enabled = true;
+        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.controls = new TrackballControls(this.camera);
         this.zoom = 13;
     }
@@ -78,6 +79,8 @@ class Terrain {
     addDirectionalLightHelper (light) {
         let directionalLightHelper = new THREE.DirectionalLightHelper(light, 20);
         this.scene.add(directionalLightHelper);
+        let shadowCameraHelper = new THREE.CameraHelper( light.shadow.camera );
+        this.scene.add(shadowCameraHelper);
     }
 
     createTerrainGeometry (elevations, lon, lat)  {
@@ -111,15 +114,15 @@ class Terrain {
 
     addSunLight () {
         this.sunLight = new THREE.DirectionalLight( 0xffffff, 10.0 );
-        this.sunLight.position.set( 50, 0, 3 );
+        this.sunLight.position.set( 35, 0, 3 );
         this.sunLight.castShadow = true;
-        let dLight = 100;
+        let dLight = 70;
   			let sLight = dLight * 0.5;
   			this.sunLight.shadow.camera.left = -sLight;
   			this.sunLight.shadow.camera.right = sLight;
   			this.sunLight.shadow.camera.top = sLight;
   			this.sunLight.shadow.camera.bottom = -sLight;
-  			this.sunLight.shadow.camera.near = dLight / 30;
+  			this.sunLight.shadow.camera.near = 1;
   			this.sunLight.shadow.camera.far = dLight;
   			this.sunLight.shadow.mapSize.x = 1024 * 2;
   			this.sunLight.shadow.mapSize.y = 1024 * 2;
