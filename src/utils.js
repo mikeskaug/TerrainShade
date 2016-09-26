@@ -10,7 +10,7 @@ export var arrayRange = (array) => {
     return _.max(array) - _.min(array);
 };
 
-let degreesToMeters = (lon, lat, delLon, delLat) => {
+export var degreesToMeters = (lon, lat, delLon, delLat) => {
     const R = 6371000; // m
     let dLon = delLon * Math.PI / 180;
     let a = Math.cos(lat * Math.PI / 180) * Math.cos(lat * Math.PI / 180) *

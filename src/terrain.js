@@ -22,7 +22,7 @@ class Terrain {
 
     initScene () {
         this.scene.background = new THREE.Color( 'rgb(255, 255, 255)' );
-        this.camera.position.set(20, -80, 200);
+        this.camera.position.set(20, -60, 100);
 
         this.renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.appendChild( this.renderer.domElement );
@@ -105,12 +105,12 @@ class Terrain {
     }
 
     addAmbientLight () {
-      let light = new THREE.AmbientLight( 0x404040 ); // soft white light
+      let light = new THREE.AmbientLight( 0x404040, 0.2 ); // soft white light
       this.scene.add( light );
     }
 
     addSunLight () {
-        this.sunLight = new THREE.DirectionalLight( 0xffffff, 1.0 );
+        this.sunLight = new THREE.DirectionalLight( 0xffffff, 10.0 );
         this.sunLight.position.set( 50, 0, 3 );
         this.sunLight.castShadow = true;
         let dLight = 100;
