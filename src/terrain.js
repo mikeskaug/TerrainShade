@@ -8,7 +8,7 @@ import { fetchElevationTile,
         getElevationsFromRGBA,
         getTileDimensions} from './tileUtilities';
 
-import { arrayMean, arrayRange, png2Array } from './utils';
+import { arrayMean, arrayRange, png2Array, sphericalToCartesian } from './utils';
 
 class Terrain {
     constructor () {
@@ -19,6 +19,7 @@ class Terrain {
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.controls = new TrackballControls(this.camera);
         this.zoom = 13;
+        this.sunPosition = [35, 90, 85] // R, azimuth, zenith
     }
 
     initScene () {
@@ -113,8 +114,9 @@ class Terrain {
     }
 
     addSunLight () {
+        let sunXYZ = sphericalToCartesian(this.sunPosition);
         this.sunLight = new THREE.DirectionalLight( 0xffffff, 10.0 );
-        this.sunLight.position.set( 35, 0, 3 );
+        this.sunLight.position.set(sunXYZ[0], sunXYZ[1], sunXYZ[2]);
         this.sunLight.castShadow = true;
         let dLight = 70;
   			let sLight = dLight * 0.5;

@@ -38,3 +38,14 @@ export var png2Array = (png) => {
     });
     return dataArray;
 };
+
+export var sphericalToCartesian = ([R, azimuthDegrees, zenithDegrees]) => {
+  // R, azimuth and zenith are spherical coordinates in degrees and Three.js units
+  let theta = (90 - azimuthDegrees) * Math.PI / 180; // solar azimuth measured from north
+  let phi = zenithDegrees * Math.PI / 180; //zenith measured from straight up (along z_hat)
+  let x = R * Math.sin(phi) * Math.cos(theta);
+  let y = R * Math.sin(phi) * Math.sin(theta);
+  let z = R * Math.cos(phi);
+
+  return [x, y, z];
+};
