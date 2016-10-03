@@ -11,7 +11,8 @@ import { fetchElevationTile,
 import { arrayMean, arrayRange, png2Array, sphericalToCartesian } from './utils';
 
 class Terrain {
-    constructor () {
+    constructor (args) {
+        this.containerID = args.divID;
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 1000 );
         this.renderer = new THREE.WebGLRenderer();
@@ -19,15 +20,16 @@ class Terrain {
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.controls = new TrackballControls(this.camera);
         this.zoom = 13;
-        this.sunPosition = [35, 90, 85] // R, azimuth, zenith
+        this.sunPosition = args.sunPosition ? args.sunPosition : [35, 90, 85]; // R, azimuth, zenith
     }
 
     initScene () {
         this.scene.background = new THREE.Color( 'rgb(255, 255, 255)' );
         this.camera.position.set(20, -60, 100);
 
-        this.renderer.setSize( window.innerWidth, window.innerHeight );
-        document.body.appendChild( this.renderer.domElement );
+        let container = document.getElementById(this.containerID);
+        this.renderer.setSize( container.innerWidth, container.innerHeight );
+        container.appendChild( this.renderer.domElement );
 
         this.addAmbientLight();
         this.addSunLight();
