@@ -28,7 +28,7 @@ class Terrain {
         this.camera.position.set(20, -60, 100);
 
         let container = document.getElementById(this.containerID);
-        this.renderer.setSize( container.innerWidth, container.innerHeight );
+        this.renderer.setSize( container.clientWidth, container.clientHeight );
         container.appendChild( this.renderer.domElement );
 
         this.addAmbientLight();

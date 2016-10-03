@@ -5,7 +5,11 @@ import TerrainShadeApp from './TerrainShadeApp';
 
 require('./less/app.less');
 
-ReactDOM.render(
-  <TerrainShadeApp />,
-  document.getElementById('app')
-);
+document.onreadystatechange = function () {
+  if (document.readyState === "complete") {
+    ReactDOM.render(
+      <TerrainShadeApp />,
+      document.getElementById('app')
+    );
+  }
+}
