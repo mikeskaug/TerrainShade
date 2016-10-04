@@ -18,7 +18,7 @@ class Terrain {
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        this.controls = new TrackballControls(this.camera);
+        this.controls = new TrackballControls(this.camera, document.getElementById(args.divID));
         this.zoom = 13;
         this.sunPosition = args.sunPosition ? args.sunPosition : [35, 90, 85]; // R, azimuth, zenith
     }
@@ -131,6 +131,12 @@ class Terrain {
   			this.sunLight.shadow.mapSize.x = 1024 * 2;
   			this.sunLight.shadow.mapSize.y = 1024 * 2;
         this.scene.add( this.sunLight );
+    }
+
+    setSunPosition (position) {
+      this.sunPosition = position;
+      let sunXYZ = sphericalToCartesian(this.sunPosition);
+      this.sunLight.position.set(sunXYZ[0], sunXYZ[1], sunXYZ[2]);
     }
 
     renderScene () {
