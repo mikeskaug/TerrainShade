@@ -111,13 +111,13 @@ class Terrain {
     }
 
     addAmbientLight () {
-      let light = new THREE.AmbientLight( 0x404040, 0.2 ); // soft white light
+      let light = new THREE.AmbientLight( 0x404040, 1.0 ); // soft white light
       this.scene.add( light );
     }
 
     addSunLight () {
         let sunXYZ = sphericalToCartesian(this.sunPosition);
-        this.sunLight = new THREE.DirectionalLight( 0xffffff, 10.0 );
+        this.sunLight = new THREE.DirectionalLight( 0xffffff, 1.0 );
         this.sunLight.position.set(sunXYZ[0], sunXYZ[1], sunXYZ[2]);
         this.sunLight.castShadow = true;
         let dLight = 70;
