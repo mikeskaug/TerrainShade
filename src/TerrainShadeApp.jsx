@@ -1,5 +1,5 @@
 import React from 'react';
-
+import moment from 'moment';
 import TerrainView from './TerrainView';
 
 const TerrainShadeApp = React.createClass({
@@ -7,33 +7,33 @@ const TerrainShadeApp = React.createClass({
     return {
       lon: -105.250,
       lat: 39.9266,
-      sunZenith: 85,
-      sunAzimuth: 90,
+      dateTime: moment(),
     }
   },
 
   render: function () {
     return (
       <div>
-        <label htmlFor='zenith-angle-slider'>Sun Zenith</label>
+        <label htmlFor='hour-slider'>Hour</label>
         <input type='range'
-               min='-89'
-               max='89'
+               min='0'
+               max='24'
                step='1'
-               id='zenith-angle-slider'
-               value={this.state.sunZenith}
-               onChange={this.handleZenithChange}/>
+               id='hour-slider'
+               value={this.state.dateTime.hour()}
+               onChange={this.handleHourChange}/>
+        {this.state.dateTime.hour()}
         <TerrainView
           lon={this.state.lon}
           lat={this.state.lat}
-          sunZenith={this.state.sunZenith}
-          sunAzimuth={this.state.sunAzimuth}/>
+          dateTime={this.state.dateTime}/>
       </div>
     )
   },
 
-  handleZenithChange: function (event) {
-    this.setState({sunZenith: event.target.value});
+  handleHourChange: function (event) {
+    let newDateTime = this.state.dateTime.clone().hour(event.target.value);
+    this.setState({dateTime: newDateTime});
   }
 });
 
