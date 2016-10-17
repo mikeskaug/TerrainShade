@@ -20,7 +20,7 @@ class Terrain {
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.controls = new TrackballControls(this.camera, document.getElementById(args.divID));
         this.zoom = 13;
-        this.sunPosition = args.sunPosition ? args.sunPosition : [35, 90, 85]; // R, azimuth, zenith
+        this.sunPosition = args.sunPosition; // R, azimuth, zenith
     }
 
     initScene () {
