@@ -13,7 +13,7 @@ const e = 0.0167032;
 const w = 2*pi/23.9344696*24; // earth angular velocity
 const lRef = 106.3; // degrees longitude east of meridian
 const tRef = 78.46; // days since Jan.1 2013 with fraction being hours, minutes, seconds etc.
-const refDate = moment('2013-01-01 00:00:00');
+const refDate = moment.utc('2013-01-01 00:00:00');
 
 const t0 = (l) => {
     return tRef - (l-lRef)/w * pi/180;
@@ -58,7 +58,7 @@ const azimuth = (L, l, t) => {
 };
 
 export const solarAngles = (lon, lat, dateTime) => {
-  let deltaDays = dateTime.diff(refDate, 'days', true);
+  let deltaDays = dateTime.clone().utc().diff(refDate, 'days', true);
   return {
     azimuth: azimuth(lat, lon, deltaDays) * 180/pi,
     zenith: zenith(lat, lon, deltaDays) * 180/pi
