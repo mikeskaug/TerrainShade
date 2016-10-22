@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import TerrainView from './TerrainView';
+import Datetime from 'react-datetime';
 
 const TerrainShadeApp = React.createClass({
   getInitialState: function () {
@@ -14,6 +15,11 @@ const TerrainShadeApp = React.createClass({
   render: function () {
     return (
       <div>
+        <Datetime value={this.state.dateTime}
+                  dateFormat='MMM D YYYY'
+                  timeFormat={false}
+                  closeOnSelect={true}
+                  onChange={this.handleDateChange}/>
         <label htmlFor='hour-slider'>Hour</label>
         <input type='range'
                min='0'
@@ -34,6 +40,12 @@ const TerrainShadeApp = React.createClass({
   handleHourChange: function (event) {
     let newDateTime = this.state.dateTime.clone().hour(event.target.value);
     this.setState({dateTime: newDateTime});
+  },
+
+  handleDateChange: function (date) {
+    let newDate = this.state.dateTime.clone();
+    newDate.set({'year': date.year(),'month': date.month(),'date': date.date()});
+    this.setState({dateTime: newDate});
   }
 });
 
