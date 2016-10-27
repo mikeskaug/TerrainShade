@@ -10,6 +10,8 @@
   "author": "@mike_skaug",
   "license": "ISC",
   "dependencies": {
+    "d3": "^4.2.8",
+    "d3-tile": "0.0.3",
     "es6-promise": "^3.2.1",
     "moment": "^2.15.1",
     "png.js": "^0.2.1",

@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import TerrainView from './TerrainView';
+import MapSelector from './MapSelector';
 import Datetime from 'react-datetime';
 
 const TerrainShadeApp = React.createClass({
@@ -29,6 +30,8 @@ const TerrainShadeApp = React.createClass({
                value={this.state.dateTime.hour()}
                onChange={this.handleHourChange}/>
         {this.state.dateTime.hour()}
+        <MapSelector lon={this.state.lon}
+                     lat={this.state.lat}>
         <TerrainView
           lon={this.state.lon}
           lat={this.state.lat}
