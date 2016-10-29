@@ -31,7 +31,7 @@ const TerrainShadeApp = React.createClass({
                onChange={this.handleHourChange}/>
         {this.state.dateTime.hour()}
         <MapSelector lon={this.state.lon}
-                     lat={this.state.lat}>
+                     lat={this.state.lat}/>
         <TerrainView
           lon={this.state.lon}
           lat={this.state.lat}
