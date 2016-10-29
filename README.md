@@ -20,22 +20,22 @@ Other than that, the app is built with modern javascript tools - ES6, React, web
 
 ### Running
 
-The following must be installed:
+To run the app on your local machine, you need the [npm](https://docs.npmjs.com/getting-started/installing-node) command line tool, which comes with an install of node.js:
 
-* [node.js](https://nodejs.org/en/)
+* [node.js](https://docs.npmjs.com/getting-started/installing-node)
 
 In the root directory, install the dependencies with:
-```
-npm install
-```
+
+    $ npm install
+This will download and install the dependencies in `./node_modules`
 
 Compile and bundle the code:
-```
-npm run bundle
-```
 
-Serve the `index.html` file and view it in your favorite browser. I use the [SimpleHTTPServer](https://docs.python.org/2/library/simplehttpserver.html) that comes with Python:
-```
-python -m SimpleHTTPServer 8000
-```
+    $ npm run bundle
+This will start a process that watches for changes to the source code and creates a new bundle in `./dist` whenever changes are detected.
+
+Now you need to serve the `index.html` file and view it in your favorite browser. I use the [SimpleHTTPServer](https://docs.python.org/2/library/simplehttpserver.html) that comes with Python:
+
+    $ python -m SimpleHTTPServer 8000
+
 which serves the app at `http://localhost:8000/`
