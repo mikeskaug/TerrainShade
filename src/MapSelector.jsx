@@ -57,7 +57,7 @@ const MapSelector = React.createClass({
     };
 
     let Zoom = zoom()
-        .scaleExtent([1, 14])
+        .scaleExtent([1 << 10, 1 << 15])
         .on("zoom", zoomed);
 
     let center = projection([this.props.lon, this.props.lat]);
@@ -65,7 +65,7 @@ const MapSelector = React.createClass({
     svg.call(Zoom)
         .call(Zoom.transform, zoomIdentity
             .translate(width / 2, height / 2)
-            .scale(50)
+            .scale(1 << 11)
             .translate(-center[0], -center[1]));
   },
 
