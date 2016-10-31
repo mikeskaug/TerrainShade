@@ -1,76 +1,81 @@
 import React from 'react';
 let d3tile = require('d3-tile');
 import { geoMercator, geoPath } from 'd3-geo';
-import { select, event } from 'd3-selection';
-import { zoom } from 'd3-zoom';
+import { select, event as currentEvent } from 'd3-selection';
+import { zoom, zoomTransform, zoomIdentity } from 'd3-zoom';
 
-const MapSelector = ({lon, lat}) => {
-  let pi = Math.PI;
-  let tau = 2 * pi;
+const MapSelector = React.createClass({
 
-  let width = Math.max(260, window.innerWidth);
-  let height = Math.max(100, window.innerHeight);
+  componentDidMount: function () {
+    let pi = Math.PI;
+    let tau = 2 * pi;
 
-  let projection = geoMercator()
-      .scale(1 / tau)
-      .translate([0, 0]);
+    let width = 300;
+    let height = 200;
 
-  let path = geoPath()
-      .projection(projection);
+    let svg = select("svg")
+        .attr("width", width)
+        .attr("height", height);
 
-  let tile = tile()
-      .size([width, height]);
+    let raster = svg.append("g");
 
-  let zoom = zoom()
-      .scaleExtent([1 << 11, 1 << 14])
-      .on("zoom", zoomed);
+    let projection = geoMercator()
+        .scale(1 / tau)
+        .translate([0, 0]);
 
-  let svg = select("svg")
-      .attr("width", width)
-      .attr("height", height);
+    let path = geoPath()
+        .projection(projection);
 
-  let raster = svg.append("g");
+    let tile = d3tile.tile()
+        .size([width, height]);
 
-  let center = projection([lon, lat]);
+    const zoomed = () => {
+      let transform = zoomTransform(svg.node());
 
-  svg.call(zoom)
-      .call(zoom.transform, d3.zoomIdentity
-          .translate(width / 2, height / 2)
-          .scale(1 << 12)
-          .translate(-center[0], -center[1]));
+      let tiles = tile
+          .scale(transform.k)
+          .translate([transform.x, transform.y])
+          ();
 
-  return <div><svg></svg></div>;
-}
+      projection
+          .scale(transform.k / tau)
+          .translate([transform.x, transform.y]);
 
-let zoomed = () => {
-  var transform = d3event.transform;
+      let image = raster
+          .attr("transform", stringify(tiles.scale, tiles.translate))
+          .selectAll("image")
+          .data(tiles, function(d) { return d; });
 
-  var tiles = tile
-      .scale(transform.k)
-      .translate([transform.x, transform.y])
-      ();
+      image.exit().remove();
 
-  projection
-      .scale(transform.k / tau)
-      .translate([transform.x, transform.y]);
+      image.enter().append("image")
+          .attr("xlink:href", function(d) { return "http://" + "abc"[d[1] % 3] + ".tile.openstreetmap.org/" + d[2] + "/" + d[0] + "/" + d[1] + ".png"; })
+          .attr("x", function(d) { return d[0] * 256; })
+          .attr("y", function(d) { return d[1] * 256; })
+          .attr("width", 256)
+          .attr("height", 256);
+    };
 
-  var image = raster
-      .attr("transform", stringify(tiles.scale, tiles.translate))
-      .selectAll("image")
-      .data(tiles, function(d) { return d; });
+    let Zoom = zoom()
+        .scaleExtent([1, 14])
+        .on("zoom", zoomed);
 
-  image.exit().remove();
+    let center = projection([this.props.lon, this.props.lat]);
 
-  image.enter().append("image")
-      .attr("xlink:href", function(d) { return "http://" + "abc"[d[1] % 3] + ".tile.openstreetmap.org/" + d[2] + "/" + d[0] + "/" + d[1] + ".png"; })
-      .attr("x", function(d) { return d[0] * 256; })
-      .attr("y", function(d) { return d[1] * 256; })
-      .attr("width", 256)
-      .attr("height", 256);
-}
+    svg.call(Zoom)
+        .call(Zoom.transform, zoomIdentity
+            .translate(width / 2, height / 2)
+            .scale(50)
+            .translate(-center[0], -center[1]));
+  },
 
-let stringify = (scale, translate) => {
-  var k = scale / 256, r = scale % 1 ? Number : Math.round;
+  render: function () {
+    return <div><svg></svg></div>;
+  }
+})
+
+const stringify = (scale, translate) => {
+  let k = scale / 256, r = scale % 1 ? Number : Math.round;
   return "translate(" + r(translate[0] * scale) + "," + r(translate[1] * scale) + ") scale(" + k + ")";
 }
 
