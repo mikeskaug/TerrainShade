@@ -13,11 +13,12 @@ const MapSelector = React.createClass({
     let width = 300;
     let height = 200;
 
-    let svg = select("svg")
-        .attr("width", width)
-        .attr("height", height);
+    let svg = select('svg')
+        .attr('width', width)
+        .attr('height', height);
 
-    let raster = svg.append("g");
+    let raster = svg.append('g');
+    let outlines = svg.append('g');
 
     let projection = geoMercator()
         .scale(1 / tau)
@@ -42,31 +43,37 @@ const MapSelector = React.createClass({
           .translate([transform.x, transform.y]);
 
       let image = raster
-          .attr("transform", stringify(tiles.scale, tiles.translate))
-          .selectAll("image")
+          .attr('transform', stringify(tiles.scale, tiles.translate))
+          .selectAll('image')
+          .data(tiles, function(d) { return d; });
+
+      let outlineLayer = outlines
+          .attr('transform', stringify(tiles.scale, tiles.translate))
+          .selectAll('rect')
           .data(tiles, function(d) { return d; });
 
       image.exit().remove();
+      outlineLayer.exit().remove();
 
       image.enter()
-            .append("image")
-          .attr("xlink:href", function(d) { return "http://" + "abc"[d[1] % 3] + ".tile.openstreetmap.org/" + d[2] + "/" + d[0] + "/" + d[1] + ".png"; })
-          .attr("x", function(d) { return d[0] * 256; })
-          .attr("y", function(d) { return d[1] * 256; })
-          .attr("width", 256)
-          .attr("height", 256);
-          
-      image.enter()
+            .append('image')
+          .attr('xlink:href', function(d) { return 'http://' + 'abc'[d[1] % 3] + '.tile.openstreetmap.org/' + d[2] + '/' + d[0] + '/' + d[1] + '.png'; })
+          .attr('x', function(d) { return d[0] * 256; })
+          .attr('y', function(d) { return d[1] * 256; })
+          .attr('width', 256)
+          .attr('height', 256);
+
+      outlineLayer.enter()
             .append('rect')
-          .attr("x", function(d) { return d[0] * 256; })
-          .attr("y", function(d) { return d[1] * 256; })
-          .attr("width", 256)
-          .attr("height", 256);
+          .attr('x', function(d) { return d[0] * 256; })
+          .attr('y', function(d) { return d[1] * 256; })
+          .attr('width', 256)
+          .attr('height', 256);
     };
 
     let Zoom = zoom()
         .scaleExtent([1 << 10, 1 << 15])
-        .on("zoom", zoomed);
+        .on('zoom', zoomed);
 
     let center = projection([this.props.lon, this.props.lat]);
 
@@ -84,7 +91,7 @@ const MapSelector = React.createClass({
 
 const stringify = (scale, translate) => {
   let k = scale / 256, r = scale % 1 ? Number : Math.round;
-  return "translate(" + r(translate[0] * scale) + "," + r(translate[1] * scale) + ") scale(" + k + ")";
+  return 'translate(' + r(translate[0] * scale) + ',' + r(translate[1] * scale) + ') scale(' + k + ')';
 }
 
 export default MapSelector;
