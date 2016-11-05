@@ -48,8 +48,16 @@ const MapSelector = React.createClass({
 
       image.exit().remove();
 
-      image.enter().append("image")
+      image.enter()
+            .append("image")
           .attr("xlink:href", function(d) { return "http://" + "abc"[d[1] % 3] + ".tile.openstreetmap.org/" + d[2] + "/" + d[0] + "/" + d[1] + ".png"; })
+          .attr("x", function(d) { return d[0] * 256; })
+          .attr("y", function(d) { return d[1] * 256; })
+          .attr("width", 256)
+          .attr("height", 256);
+          
+      image.enter()
+            .append('rect')
           .attr("x", function(d) { return d[0] * 256; })
           .attr("y", function(d) { return d[1] * 256; })
           .attr("width", 256)
@@ -70,7 +78,7 @@ const MapSelector = React.createClass({
   },
 
   render: function () {
-    return <div><svg></svg></div>;
+    return <div className='map-selector'><svg></svg></div>;
   }
 })
 

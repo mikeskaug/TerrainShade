@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "bundle": "webpack --progress --colors --watch",
-    "start": "webpack-dev-server -d --progress"
+    "start": "webpack-dev-server -d --progress",
+    "dev": "python2.6 -m SimpleHTTPServer 8000"
   },
   "author": "@mike_skaug",
   "license": "ISC",
