@@ -4,6 +4,19 @@ import { geoMercator, geoPath } from 'd3-geo';
 import { select, event as currentEvent } from 'd3-selection';
 import { zoom, zoomTransform, zoomIdentity } from 'd3-zoom';
 
+
+const getRegionTiles = (tiles) => {
+// takes a set of image tiles and returns a new set of smaller tiles corresponding to +1 higher zoom level
+  let regions = [];
+  tiles.forEach(tile => {
+    regions.push([tile[0], tile[1], tile[2]])
+    regions.push([tile[0]+0.5, tile[1], tile[2]])
+    regions.push([tile[0]+0.5, tile[1]+0.5, tile[2]])
+    regions.push([tile[0], tile[1]+0.5, tile[2]])
+  });
+  return regions;
+};
+
 const MapSelector = React.createClass({
 
   componentDidMount: function () {
@@ -27,30 +40,35 @@ const MapSelector = React.createClass({
     let path = geoPath()
         .projection(projection);
 
-    let tile = d3tile.tile()
+    let imageTileLayout = d3tile.tile()
+        .size([width, height]);
+
+    let outlineTileLayout = d3tile.tile()
         .size([width, height]);
 
     const zoomed = () => {
       let transform = zoomTransform(svg.node());
 
-      let tiles = tile
+      let imageTiles = imageTileLayout
           .scale(transform.k)
           .translate([transform.x, transform.y])
           ();
+
+      let regionTiles = getRegionTiles(imageTiles);
 
       projection
           .scale(transform.k / tau)
           .translate([transform.x, transform.y]);
 
       let image = raster
-          .attr('transform', stringify(tiles.scale, tiles.translate))
+          .attr('transform', stringify(imageTiles.scale, imageTiles.translate))
           .selectAll('image')
-          .data(tiles, function(d) { return d; });
+          .data(imageTiles, function(d) { return d; });
 
       let outlineLayer = outlines
-          .attr('transform', stringify(tiles.scale, tiles.translate))
+          .attr('transform', stringify(imageTiles.scale, imageTiles.translate))
           .selectAll('rect')
-          .data(tiles, function(d) { return d; });
+          .data(regionTiles, function(d) { return d; });
 
       image.exit().remove();
       outlineLayer.exit().remove();
@@ -67,8 +85,8 @@ const MapSelector = React.createClass({
             .append('rect')
           .attr('x', function(d) { return d[0] * 256; })
           .attr('y', function(d) { return d[1] * 256; })
-          .attr('width', 256)
-          .attr('height', 256);
+          .attr('width', 128)
+          .attr('height', 128);
     };
 
     let Zoom = zoom()
