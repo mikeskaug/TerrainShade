@@ -4,15 +4,23 @@ import { geoMercator, geoPath } from 'd3-geo';
 import { select, event as currentEvent } from 'd3-selection';
 import { zoom, zoomTransform, zoomIdentity } from 'd3-zoom';
 
+import { long2tile, lat2tile } from './tileUtilities';
 
-const getRegionTiles = (tiles) => {
+
+const getRegionTiles = (tiles, lon, lat) => {
 // takes a set of image tiles and returns a new set of smaller tiles corresponding to +1 higher zoom level
   let regions = [];
+  let regX = long2tile(lon, tiles[0][2]+1);
+  let regY = lat2tile(lat, tiles[0][2]+1);
+
   tiles.forEach(tile => {
     regions.push([tile[0]*2, tile[1]*2, tile[2]+1])
     regions.push([tile[0]*2+1, tile[1]*2, tile[2]+1])
     regions.push([tile[0]*2, tile[1]*2+1, tile[2]+1])
     regions.push([tile[0]*2+1, tile[1]*2+1, tile[2]+1])
+  });
+  regions.forEach(region => {
+    region.fill = (regX === region[0] && regY === region[1]) ? 'rgba(255,0,0,0.2)' : 'none'
   });
   return regions;
 };
@@ -53,9 +61,9 @@ const MapSelector = React.createClass({
           .scale(transform.k)
           .translate([transform.x, transform.y])
           ();
-      console.log(imageTiles)
-      let regionTiles = getRegionTiles(imageTiles);
 
+      let regionTiles = getRegionTiles(imageTiles, this.props.lon, this.props.lat);
+      console.log(regionTiles)
       projection
           .scale(transform.k / tau)
           .translate([transform.x, transform.y]);
@@ -76,15 +84,16 @@ const MapSelector = React.createClass({
       image.enter()
             .append('image')
           .attr('xlink:href', function(d) { return 'http://' + 'abc'[d[1] % 3] + '.tile.openstreetmap.org/' + d[2] + '/' + d[0] + '/' + d[1] + '.png'; })
-          .attr('x', function(d) { return d[0] * 256; })
-          .attr('y', function(d) { return d[1] * 256; })
+          .attr('x', d => { return d[0] * 256; })
+          .attr('y', d => { return d[1] * 256; })
           .attr('width', 256)
           .attr('height', 256);
 
       outlineLayer.enter()
             .append('rect')
-          .attr('x', function(d) { return d[0] * 128; })
-          .attr('y', function(d) { return d[1] * 128; })
+          .attr('x', d => { return d[0] * 128; })
+          .attr('y', d => { return d[1] * 128; })
+          .attr('fill', d => { return d.fill; })
           .attr('width', 128)
           .attr('height', 128);
     };
