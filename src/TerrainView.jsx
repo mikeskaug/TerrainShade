@@ -8,6 +8,7 @@ const TerrainView = React.createClass({
   componentDidMount: function () {
     let angles = solarAngles(this.props.lon, this.props.lat, this.props.dateTime);
     this.terrain = new Terrain({divID: 'terrain-view',
+                                zoom: this.props.zoom,
                                 sunPosition: [35, angles.azimuth, angles.zenith]});
     this.terrain.initScene();
     this.terrain.addHelpers();

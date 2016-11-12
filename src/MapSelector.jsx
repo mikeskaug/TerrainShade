@@ -1,11 +1,17 @@
 import React from 'react';
 let d3tile = require('d3-tile');
-import { geoMercator, geoPath } from 'd3-geo';
+import { geoMercator } from 'd3-geo';
 import { select, event as currentEvent } from 'd3-selection';
 import { zoom, zoomTransform, zoomIdentity } from 'd3-zoom';
 
 import { long2tile, lat2tile } from './tileUtilities';
 
+const zoomLevelToMercator = (zoomLevel) => {
+  return Math.pow(2, 11 + zoomLevel) / 2 / Math.PI;
+}
+const zoomLevelFromMercator = (zoomLevelInMercator) => {
+  return Math.log(zoomLevelInMercator * 2 * Math.PI) / Math.LN2 - 11;
+}
 
 const getRegionTiles = (tiles, lon, lat) => {
 // takes a set of image tiles and returns a new set of smaller tiles corresponding to +1 higher zoom level
@@ -45,9 +51,6 @@ const MapSelector = React.createClass({
         .scale(1 / tau)
         .translate([0, 0]);
 
-    let path = geoPath()
-        .projection(projection);
-
     let imageTileLayout = d3tile.tile()
         .size([width, height]);
 
@@ -63,7 +66,7 @@ const MapSelector = React.createClass({
           ();
 
       let regionTiles = getRegionTiles(imageTiles, this.props.lon, this.props.lat);
-      console.log(regionTiles)
+
       projection
           .scale(transform.k / tau)
           .translate([transform.x, transform.y]);
@@ -99,15 +102,16 @@ const MapSelector = React.createClass({
     };
 
     let Zoom = zoom()
-        .scaleExtent([1 << 10, 1 << 15])
+        .scaleExtent([1 << 10, 1 << 25])
         .on('zoom', zoomed);
 
     let center = projection([this.props.lon, this.props.lat]);
+    let initialZoom = zoomLevelToMercator(this.props.zoom - 1);
 
     svg.call(Zoom)
         .call(Zoom.transform, zoomIdentity
             .translate(width / 2, height / 2)
-            .scale(1 << 11)
+            .scale(initialZoom)
             .translate(-center[0], -center[1]));
   },
 
