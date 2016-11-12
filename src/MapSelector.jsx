@@ -9,10 +9,10 @@ const getRegionTiles = (tiles) => {
 // takes a set of image tiles and returns a new set of smaller tiles corresponding to +1 higher zoom level
   let regions = [];
   tiles.forEach(tile => {
-    regions.push([tile[0], tile[1], tile[2]])
-    regions.push([tile[0]+0.5, tile[1], tile[2]])
-    regions.push([tile[0]+0.5, tile[1]+0.5, tile[2]])
-    regions.push([tile[0], tile[1]+0.5, tile[2]])
+    regions.push([tile[0]*2, tile[1]*2, tile[2]+1])
+    regions.push([tile[0]*2+1, tile[1]*2, tile[2]+1])
+    regions.push([tile[0]*2, tile[1]*2+1, tile[2]+1])
+    regions.push([tile[0]*2+1, tile[1]*2+1, tile[2]+1])
   });
   return regions;
 };
@@ -53,7 +53,7 @@ const MapSelector = React.createClass({
           .scale(transform.k)
           .translate([transform.x, transform.y])
           ();
-
+      console.log(imageTiles)
       let regionTiles = getRegionTiles(imageTiles);
 
       projection
@@ -83,8 +83,8 @@ const MapSelector = React.createClass({
 
       outlineLayer.enter()
             .append('rect')
-          .attr('x', function(d) { return d[0] * 256; })
-          .attr('y', function(d) { return d[1] * 256; })
+          .attr('x', function(d) { return d[0] * 128; })
+          .attr('y', function(d) { return d[1] * 128; })
           .attr('width', 128)
           .attr('height', 128);
     };
