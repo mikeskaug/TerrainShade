@@ -20,6 +20,10 @@ const TerrainView = React.createClass({
       let angles = solarAngles(this.props.lon, this.props.lat, nextProps.dateTime);
       this.terrain.setSunPosition([35, angles.azimuth, angles.zenith]);
     }
+    if (nextProps.lon !== this.props.lon || nextProps.lat !== this.props.lat) {
+      this.terrain.clearTile();
+      this.terrain.renderTile(nextProps.lon, nextProps.lat);
+    }
   },
 
   render: function () {

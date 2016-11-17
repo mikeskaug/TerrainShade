@@ -33,7 +33,8 @@ const TerrainShadeApp = React.createClass({
         {this.state.dateTime.hour()}
         <MapSelector lon={this.state.lon}
                      lat={this.state.lat}
-                     zoom={this.state.zoom}/>
+                     zoom={this.state.zoom}
+                     updateLocation={this.handleLocationChange}/>
         <TerrainView
           lon={this.state.lon}
           lat={this.state.lat}
@@ -52,7 +53,12 @@ const TerrainShadeApp = React.createClass({
     let newDate = this.state.dateTime.clone();
     newDate.set({'year': date.year(),'month': date.month(),'date': date.date()});
     this.setState({dateTime: newDate});
+  },
+
+  handleLocationChange: function (coords) {
+    this.setState({lon: coords[0], lat: coords[1]})
   }
+  
 });
 
 export default TerrainShadeApp;

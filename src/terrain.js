@@ -57,6 +57,10 @@ class Terrain {
 
     }
 
+    clearTile () {
+      this.scene.remove( this.terrain );
+    }
+
     getElevationData (lon, lat) {
         let fetchResponse = fetchElevationTile(lon, lat, this.zoom);
 

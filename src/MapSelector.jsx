@@ -1,7 +1,7 @@
 import React from 'react';
 let d3tile = require('d3-tile');
 import { geoMercator } from 'd3-geo';
-import { select, event as currentEvent } from 'd3-selection';
+import { select, mouse } from 'd3-selection';
 import { zoom, zoomTransform, zoomIdentity } from 'd3-zoom';
 
 import { long2tile, lat2tile } from './tileUtilities';
@@ -11,6 +11,12 @@ const zoomLevelToMercator = (zoomLevel) => {
 }
 const zoomLevelFromMercator = (zoomLevelInMercator) => {
   return Math.log(zoomLevelInMercator * 2 * Math.PI) / Math.LN2 - 11;
+}
+
+const isNewTile = (newPosition, oldPosition, zoom) => {
+  let newTile = [long2tile(newPosition[0], zoom), lat2tile(newPosition[1], zoom)];
+  let oldTile = [long2tile(oldPosition[0], zoom), lat2tile(oldPosition[1], zoom)];
+  return (newTile[0] !== oldTile[0] || newTile[1] !== oldTile[1]) ? true : false;
 }
 
 const getRegionTiles = (tiles, lon, lat) => {
@@ -46,6 +52,15 @@ const MapSelector = React.createClass({
 
     let raster = svg.append('g');
     let outlines = svg.append('g');
+
+    svg.on('click', (d, i, node) => {
+      let mouseCoords = mouse(svg.node());
+      let newPosition = projection.invert(mouseCoords);
+      let currentPosition = [this.props.lon, this.props.lat];
+      if (isNewTile(newPosition, currentPosition, this.props.zoom)){
+        this.props.updateLocation(newPosition)
+      }
+    });
 
     let projection = geoMercator()
         .scale(1 / tau)
