@@ -34,7 +34,8 @@ const TerrainShadeApp = React.createClass({
         <MapSelector lon={this.state.lon}
                      lat={this.state.lat}
                      zoom={this.state.zoom}
-                     updateLocation={this.handleLocationChange}/>
+                     updateLocation={this.handleLocationChange}
+                     updateZoom={this.handleZoomLevelChange}/>
         <TerrainView
           lon={this.state.lon}
           lat={this.state.lat}
@@ -56,9 +57,13 @@ const TerrainShadeApp = React.createClass({
   },
 
   handleLocationChange: function (coords) {
-    this.setState({lon: coords[0], lat: coords[1]})
+    this.setState({lon: coords[0], lat: coords[1]});
+  },
+
+  handleZoomLevelChange: function (zoom) {
+    this.setState({zoom: zoom});
   }
-  
+
 });
 
 export default TerrainShadeApp;

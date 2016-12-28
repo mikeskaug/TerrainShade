@@ -24,6 +24,11 @@ const TerrainView = React.createClass({
       this.terrain.clearTile();
       this.terrain.renderTile(nextProps.lon, nextProps.lat);
     }
+    if (nextProps.zoom != this.props.zoom) {
+      this.terrain.zoom = nextProps.zoom;
+      this.terrain.clearTile();
+      this.terrain.renderTile(nextProps.lon, nextProps.lat);
+    }
   },
 
   render: function () {

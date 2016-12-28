@@ -82,6 +82,10 @@ const MapSelector = React.createClass({
 
       let regionTiles = getRegionTiles(imageTiles, this.props.lon, this.props.lat);
 
+      if (imageTiles[0][2] + 1 !== this.props.zoom) {
+        this.props.updateZoom(imageTiles[0][2] + 1)
+      }
+
       projection
           .scale(transform.k / tau)
           .translate([transform.x, transform.y]);
