@@ -150,6 +150,8 @@ class MapSelector {
         .attr('fill', d => d.fill)
         .attr('width', 128)
         .attr('height', 128);
+
+    outlineLayer.attr('fill', d => d.fill);
   }
 }
 

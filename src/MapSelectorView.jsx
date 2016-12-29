@@ -24,6 +24,8 @@ const MapSelectorView = React.createClass({
 
   componentWillReceiveProps: function (nextProps) {
     if (nextProps.lon !== this.props.lon || nextProps.lat !== this.props.lat) {
+      this.mapSelector.lon = nextProps.lon;
+      this.mapSelector.lat = nextProps.lat;
       this.mapSelector.updateRegionTiles();
     }
   },
