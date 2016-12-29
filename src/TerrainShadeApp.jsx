@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import TerrainView from './TerrainView';
-import MapSelector from './MapSelector';
+import MapSelectorView from './MapSelectorView';
 import Datetime from 'react-datetime';
 
 const TerrainShadeApp = React.createClass({
@@ -10,8 +10,8 @@ const TerrainShadeApp = React.createClass({
       lon: -105.250,
       lat: 39.9266,
       zoom: 13,
-      dateTime: moment(),
-    }
+      dateTime: moment()
+    };
   },
 
   render: function () {
@@ -31,18 +31,19 @@ const TerrainShadeApp = React.createClass({
                value={this.state.dateTime.hour()}
                onChange={this.handleHourChange}/>
         {this.state.dateTime.hour()}
-        <MapSelector lon={this.state.lon}
-                     lat={this.state.lat}
-                     zoom={this.state.zoom}
-                     updateLocation={this.handleLocationChange}
-                     updateZoom={this.handleZoomLevelChange}/>
+        <MapSelectorView
+          lon={this.state.lon}
+          lat={this.state.lat}
+          zoom={this.state.zoom}
+          updateLocation={this.handleLocationChange}
+          updateZoom={this.handleZoomLevelChange}/>
         <TerrainView
           lon={this.state.lon}
           lat={this.state.lat}
           zoom={this.state.zoom}
           dateTime={this.state.dateTime}/>
       </div>
-    )
+    );
   },
 
   handleHourChange: function (event) {
@@ -52,7 +53,7 @@ const TerrainShadeApp = React.createClass({
 
   handleDateChange: function (date) {
     let newDate = this.state.dateTime.clone();
-    newDate.set({'year': date.year(),'month': date.month(),'date': date.date()});
+    newDate.set({year: date.year(), month: date.month(), date: date.date()});
     this.setState({dateTime: newDate});
   },
 

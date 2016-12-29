@@ -1,14 +1,13 @@
-let THREE = require( 'three' );
+let THREE = require('three');
 let PNG = require('png.js');
 import _ from 'underscore';
-import Trackballcontrols from 'three-trackballcontrols';
 
 import { fetchElevationTile,
         getImageTileURL,
         getElevationsFromRGBA,
         getTileDimensions} from './tileUtilities';
 
-import { arrayMean, arrayRange, png2Array, sphericalToCartesian } from './utils';
+import { arrayMean, png2Array, sphericalToCartesian } from './utils';
 
 class Terrain {
     constructor (args) {

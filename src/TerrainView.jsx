@@ -4,6 +4,12 @@ import Terrain from './terrain';
 
 
 const TerrainView = React.createClass({
+  propTypes: {
+    lon: React.PropTypes.number.isRequired,
+    lat: React.PropTypes.number.isRequired,
+    zoom: React.PropTypes.number.isRequired,
+    dateTime: React.PropTypes.object.isRequired
+  },
 
   componentDidMount: function () {
     let angles = solarAngles(this.props.lon, this.props.lat, this.props.dateTime);
@@ -24,7 +30,7 @@ const TerrainView = React.createClass({
       this.terrain.clearTile();
       this.terrain.renderTile(nextProps.lon, nextProps.lat);
     }
-    if (nextProps.zoom != this.props.zoom) {
+    if (nextProps.zoom !== this.props.zoom) {
       this.terrain.zoom = nextProps.zoom;
       this.terrain.clearTile();
       this.terrain.renderTile(nextProps.lon, nextProps.lat);
@@ -32,7 +38,7 @@ const TerrainView = React.createClass({
   },
 
   render: function () {
-    return <div id='terrain-view'></div>;
+    return <div id='terrain-view'/>;
   }
 });
 
