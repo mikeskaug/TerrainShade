@@ -47,7 +47,9 @@ class Terrain {
           this.createTerrainGeometry(elevations, lon, lat);
           this.loadTexture(lon, lat)
               .then(texture => {
-                this.material = new THREE.MeshLambertMaterial({map: texture});
+                this.material = new THREE.MeshLambertMaterial({map: texture,
+                  side: THREE.DoubleSide,
+                  needsUpdate: true});
                 this.terrain = new THREE.Mesh(this.geometry, this.material);
                 this.terrain.castShadow = true;
                 this.terrain.receiveShadow = true;
@@ -101,6 +103,9 @@ class Terrain {
     _.range(this.geometry.vertices.length).map(i => {
       this.geometry.vertices[i].z = (elevations[i] - meanElevation) * meshUnitsPerMeter;
     });
+    this.geometry.normalsNeedUpdate = true;
+    this.geometry.computeFaceNormals();
+    this.geometry.computeVertexNormals();
   }
 
   loadTexture (lon, lat) {
