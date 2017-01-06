@@ -1,4 +1,5 @@
 let THREE = require('three');
+require('imports-loader?THREE=three!../node_modules/three/examples/js/modifiers/SimplifyModifier.js');
 let PNG = require('png.js');
 import _ from 'underscore';
 import TrackballControls from 'three-trackballcontrols';
@@ -47,7 +48,7 @@ class Terrain {
           this.createTerrainGeometry(elevations, lon, lat);
           this.loadTexture(lon, lat)
               .then(texture => {
-                this.material = new THREE.MeshLambertMaterial({map: texture,
+                this.material = new THREE.MeshPhongMaterial({map: texture,
                   side: THREE.DoubleSide,
                   needsUpdate: true});
                 this.terrain = new THREE.Mesh(this.geometry, this.material);
@@ -103,6 +104,8 @@ class Terrain {
     _.range(this.geometry.vertices.length).map(i => {
       this.geometry.vertices[i].z = (elevations[i] - meanElevation) * meshUnitsPerMeter;
     });
+    let simplify = new THREE.SimplifyModifier();
+    this.geometry = simplify.modify(this.geometry, this.geometry.vertices.length * 0.5 | 0);
     this.geometry.normalsNeedUpdate = true;
     this.geometry.computeFaceNormals();
     this.geometry.computeVertexNormals();
@@ -120,7 +123,7 @@ class Terrain {
   }
 
   addAmbientLight () {
-    let light = new THREE.AmbientLight(0x404040, 1.0);
+    let light = new THREE.AmbientLight(0x404040, 2.0);
     this.scene.add(light);
   }
 

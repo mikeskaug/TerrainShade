@@ -4,7 +4,7 @@ import _ from 'underscore';
 import { degreesToMeters } from './utils';
 
 const baseElevationURL = 'https://terrain-preview.mapzen.com/terrarium';
-const baseImageURL = 'https://a.dyn.tile.stamen.com/terrain';
+const baseImageURL = 'http://tile.stamen.com/terrain';
 
 export const long2tile = (lon, zoom) => {
   return (Math.floor((lon + 180) / 360 * Math.pow(2, zoom)));
@@ -27,7 +27,7 @@ export const getImageTileURL = (lon, lat, zoom) => {
   let x = long2tile(lon, zoom);
   let y = lat2tile(lat, zoom);
   let url = baseImageURL + '/' + zoom + '/' + x + '/' + y + '.png';
-
+  console.log(url);
   return url;
 };
 
