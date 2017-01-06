@@ -27,7 +27,6 @@ export const getImageTileURL = (lon, lat, zoom) => {
   let x = long2tile(lon, zoom);
   let y = lat2tile(lat, zoom);
   let url = baseImageURL + '/' + zoom + '/' + x + '/' + y + '.png';
-  console.log(url);
   return url;
 };
 

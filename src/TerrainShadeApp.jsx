@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import TerrainView from './TerrainView';
 import MapSelectorView from './MapSelectorView';
+import { hoursTohhmm, hhmmTohours } from './utils';
 import Datetime from 'react-datetime';
 
 const TerrainShadeApp = React.createClass({
@@ -26,11 +27,11 @@ const TerrainShadeApp = React.createClass({
         <input type='range'
                min='0'
                max='24'
-               step='1'
+               step='0.1'
                id='hour-slider'
-               value={this.state.dateTime.hour()}
-               onChange={this.handleHourChange}/>
-        {this.state.dateTime.hour()}
+               value={this.getFractionalHours()}
+               onChange={this.handleTimeChange}/>
+             {this.state.dateTime.format('h:mm')}
         <MapSelectorView
           lon={this.state.lon}
           lat={this.state.lat}
@@ -46,8 +47,14 @@ const TerrainShadeApp = React.createClass({
     );
   },
 
-  handleHourChange: function (event) {
-    let newDateTime = this.state.dateTime.clone().hour(event.target.value);
+  getFractionalHours: function () {
+    return hhmmTohours({hour: this.state.dateTime.hour(),
+      minute: this.state.dateTime.minute()});
+  },
+
+  handleTimeChange: function (event) {
+    let newTime = hoursTohhmm(event.target.value);
+    let newDateTime = this.state.dateTime.clone().set(newTime);
     this.setState({dateTime: newDateTime});
   },
 
