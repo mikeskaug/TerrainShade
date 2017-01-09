@@ -1,5 +1,4 @@
 let THREE = require('three');
-require('imports-loader?THREE=three!../node_modules/three/examples/js/modifiers/SimplifyModifier.js');
 let PNG = require('png.js');
 import _ from 'underscore';
 import TrackballControls from 'three-trackballcontrols';
@@ -104,8 +103,6 @@ class Terrain {
     _.range(this.geometry.vertices.length).map(i => {
       this.geometry.vertices[i].z = (elevations[i] - meanElevation) * meshUnitsPerMeter;
     });
-    let simplify = new THREE.SimplifyModifier();
-    this.geometry = simplify.modify(this.geometry, this.geometry.vertices.length * 0.5 | 0);
     this.geometry.normalsNeedUpdate = true;
     this.geometry.computeFaceNormals();
     this.geometry.computeVertexNormals();
