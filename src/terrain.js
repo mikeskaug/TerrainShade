@@ -22,6 +22,7 @@ class Terrain {
     this.controls = new TrackballControls(this.camera, document.getElementById(args.divID));
     this.zoom = args.zoom;
     this.sunPosition = args.sunPosition;
+    this.terrainLoadComplete = args.terrainLoadComplete;
   }
 
   initScene () {
@@ -55,6 +56,7 @@ class Terrain {
                 this.terrain.receiveShadow = true;
                 this.scene.add(this.terrain);
                 this.renderScene();
+                this.terrainLoadComplete();
               });
         });
   }

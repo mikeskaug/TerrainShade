@@ -13,11 +13,11 @@ const MapSelectorView = React.createClass({
 
   componentDidMount: function () {
     this.mapSelector = new MapSelector({el: 'svg',
-                                        lon: this.props.lon,
-                                        lat: this.props.lat,
-                                        zoom: this.props.zoom,
-                                        updateLocation: this.props.updateLocation,
-                                        updateZoom: this.props.updateZoom});
+      lon: this.props.lon,
+      lat: this.props.lat,
+      zoom: this.props.zoom,
+      updateLocation: this.props.updateLocation,
+      updateZoom: this.props.updateZoom});
 
     this.mapSelector.initMap();
   },

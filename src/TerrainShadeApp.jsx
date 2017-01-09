@@ -4,6 +4,7 @@ import TerrainView from './TerrainView';
 import MapSelectorView from './MapSelectorView';
 import { hoursTohhmm, hhmmTohours } from './utils';
 import Datetime from 'react-datetime';
+import { Button } from 'react-bootstrap';
 
 const TerrainShadeApp = React.createClass({
   getInitialState: function () {
@@ -11,7 +12,8 @@ const TerrainShadeApp = React.createClass({
       lon: -105.250,
       lat: 39.9266,
       zoom: 13,
-      dateTime: moment()
+      dateTime: moment(),
+      terrainLoad: false
     };
   },
 
@@ -38,11 +40,14 @@ const TerrainShadeApp = React.createClass({
           zoom={this.state.zoom}
           updateLocation={this.handleLocationChange}
           updateZoom={this.handleZoomLevelChange}/>
+        <Button bsSize='large' onClick={this.handleTerrainRefresh}>Refresh</Button>
         <TerrainView
           lon={this.state.lon}
           lat={this.state.lat}
           zoom={this.state.zoom}
-          dateTime={this.state.dateTime}/>
+          dateTime={this.state.dateTime}
+          terrainLoading={this.state.terrainLoad}
+          terrainLoadComplete={this.handleTerrainLoadComplete}/>
       </div>
     );
   },
@@ -70,6 +75,14 @@ const TerrainShadeApp = React.createClass({
 
   handleZoomLevelChange: function (zoom) {
     this.setState({zoom: zoom});
+  },
+
+  handleTerrainRefresh: function () {
+    this.setState({terrainLoad: true});
+  },
+
+  handleTerrainLoadComplete: function () {
+    this.setState({terrainLoad: false});
   }
 
 });
