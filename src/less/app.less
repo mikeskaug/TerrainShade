@@ -6,12 +6,49 @@ body {
 
 #app {
   width: 100%;
-  height: 700px;
+  height: 100%;
 }
 
 #terrain-view {
   width: 100%;
-  height: 700px;
+  height: 0;
+  padding-bottom: 100%;
+}
+
+.content {
+  min-height: 800px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-flow: row;
+}
+
+.header {
+  width: 100%;
+  display: block;
+  margin: 4px;
+  padding: 5px;
+  min-height: 50px;
+}
+
+.control-panel {
+  background: #f0f0f0;
+  margin: 4px;
+  padding: 15px;
+  flex: 1 6 30%;
+  order: 1;
+}
+
+.control {
+  padding: 20px 0;
+}
+
+.terrain-view {
+  margin: 4px;
+  padding: 5px;
+  border-radius: 7pt;
+  flex: 3 1 70%;
+  order: 2;
 }
 
 .map-selector rect {

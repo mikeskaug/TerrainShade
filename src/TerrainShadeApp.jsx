@@ -20,34 +20,44 @@ const TerrainShadeApp = React.createClass({
   render: function () {
     return (
       <div>
-        <Datetime value={this.state.dateTime}
-                  dateFormat='MMM D YYYY'
-                  timeFormat={false}
-                  closeOnSelect={true}
-                  onChange={this.handleDateChange}/>
-        <label htmlFor='hour-slider'>Hour</label>
-        <input type='range'
-               min='0'
-               max='24'
-               step='0.01666'
-               id='hour-slider'
-               value={this.getFractionalHours()}
-               onChange={this.handleTimeChange}/>
-             {this.state.dateTime.format('h:mm')}
-        <MapSelectorView
-          lon={this.state.lon}
-          lat={this.state.lat}
-          zoom={this.state.zoom}
-          updateLocation={this.handleLocationChange}
-          updateZoom={this.handleZoomLevelChange}/>
-        <Button bsSize='large' onClick={this.handleTerrainRefresh}>Refresh</Button>
-        <TerrainView
-          lon={this.state.lon}
-          lat={this.state.lat}
-          zoom={this.state.zoom}
-          dateTime={this.state.dateTime}
-          terrainLoading={this.state.terrainLoad}
-          terrainLoadComplete={this.handleTerrainLoadComplete}/>
+        <div className='header'><h2>TerrainShade</h2></div>
+        <div className='content'>
+          <div className='control-panel'>
+            <Datetime value={this.state.dateTime}
+                      dateFormat='MMM D YYYY'
+                      timeFormat={false}
+                      className='control'
+                      closeOnSelect={true}
+                      onChange={this.handleDateChange}/>
+            <div className='control'>
+              <label htmlFor='hour-slider'>Hour</label>
+              <input type='range'
+                     min='0'
+                     max='24'
+                     step='0.01666'
+                     id='hour-slider'
+                     value={this.getFractionalHours()}
+                     onChange={this.handleTimeChange}/>
+                   {this.state.dateTime.format('h:mm')}
+            </div>
+            <MapSelectorView
+              lon={this.state.lon}
+              lat={this.state.lat}
+              zoom={this.state.zoom}
+              updateLocation={this.handleLocationChange}
+              updateZoom={this.handleZoomLevelChange}/>
+          </div>
+          <div className='terrain-view'>
+            <Button bsSize='large' onClick={this.handleTerrainRefresh}>Refresh</Button>
+            <TerrainView
+              lon={this.state.lon}
+              lat={this.state.lat}
+              zoom={this.state.zoom}
+              dateTime={this.state.dateTime}
+              terrainLoading={this.state.terrainLoad}
+              terrainLoadComplete={this.handleTerrainLoadComplete}/>
+          </div>
+        </div>
       </div>
     );
   },

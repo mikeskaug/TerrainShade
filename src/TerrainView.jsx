@@ -20,7 +20,7 @@ const TerrainView = React.createClass({
                                 sunPosition: [35, angles.azimuth, angles.zenith],
                                 terrainLoadComplete: this.props.terrainLoadComplete});
     this.terrain.initScene();
-    this.terrain.addHelpers();
+    // this.terrain.addHelpers();
     this.terrain.renderTile(this.props.lon, this.props.lat);
   },
 
