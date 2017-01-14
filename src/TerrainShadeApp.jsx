@@ -30,7 +30,7 @@ const TerrainShadeApp = React.createClass({
                       closeOnSelect={true}
                       onChange={this.handleDateChange}/>
             <div className='control'>
-              <label htmlFor='hour-slider'>Hour</label>
+              <label htmlFor='hour-slider'>Time</label>
               <input type='range'
                      min='0'
                      max='24'
@@ -38,7 +38,7 @@ const TerrainShadeApp = React.createClass({
                      id='hour-slider'
                      value={this.getFractionalHours()}
                      onChange={this.handleTimeChange}/>
-                   {this.state.dateTime.format('h:mm')}
+                   <div className='time-label'>{this.state.dateTime.format('h:mma')}</div>
             </div>
             <MapSelectorView
               lon={this.state.lon}
