@@ -15,7 +15,7 @@ class Terrain {
     this.containerID = args.divID;
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(45,
-      3/2, 0.1, 1000);
+      3 / 2, 0.1, 1000);
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -26,9 +26,8 @@ class Terrain {
   }
 
   initScene () {
-    this.scene.background = new THREE.Color('rgb(255, 255, 255)');
+    this.scene.background = new THREE.Color('rgb(50%, 50%, 50%)');
     this.camera.position.set(20, -60, 100);
-
     let container = document.getElementById(this.containerID);
     this.renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(this.renderer.domElement);
