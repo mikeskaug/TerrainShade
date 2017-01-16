@@ -13,7 +13,8 @@ const TerrainShadeApp = React.createClass({
       lat: 39.9266,
       zoom: 13,
       dateTime: moment(),
-      terrainLoad: false
+      terrainLoad: false,
+      terrainView: 'perspective'
     };
   },
 
@@ -49,13 +50,18 @@ const TerrainShadeApp = React.createClass({
           </div>
           <div className='terrain-view'>
             <Button bsSize='large' onClick={this.handleTerrainRefresh}>Refresh</Button>
+            <Button onClick={this.handleSwitchToPerspectiveView}
+                    active={this.state.terrainView === 'perspective'}>Perspective</Button>
+            <Button onClick={this.handleSwitchToOrthoView}
+                    active={this.state.terrainView === 'ortho'}>Ortho</Button>
             <TerrainView
               lon={this.state.lon}
               lat={this.state.lat}
               zoom={this.state.zoom}
               dateTime={this.state.dateTime}
               terrainLoading={this.state.terrainLoad}
-              terrainLoadComplete={this.handleTerrainLoadComplete}/>
+              terrainLoadComplete={this.handleTerrainLoadComplete}
+              terrainView={this.state.terrainView}/>
           </div>
         </div>
       </div>
@@ -93,6 +99,14 @@ const TerrainShadeApp = React.createClass({
 
   handleTerrainLoadComplete: function () {
     this.setState({terrainLoad: false});
+  },
+
+  handleSwitchToOrthoView: function () {
+    this.setState({terrainView: 'ortho'});
+  },
+
+  handleSwitchToPerspectiveView: function () {
+    this.setState({terrainView: 'perspective'});
   }
 
 });

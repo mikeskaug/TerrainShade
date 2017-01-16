@@ -14,12 +14,20 @@ class Terrain {
   constructor (args) {
     this.containerID = args.divID;
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(45,
-      3 / 2, 0.1, 1000);
+
+    this.perspectiveCamera = new THREE.PerspectiveCamera(45, 3 / 2, 0.1, 1000);
+    this.perspectiveCamera.position.set(50, -64, 25);
+    this.perspectiveCamera.lookAt(new THREE.Vector3(0, 0, 0));
+    this.perspectiveCamera.up = new THREE.Vector3(-0.4, 0.6, 0.31);
+    this.controls = new TrackballControls(this.perspectiveCamera,
+      document.getElementById(args.divID));
+
+    this.orthoCamera = new THREE.OrthographicCamera(100 / -2, 100 / 2, 100 / 2, 100 / -2, 1, 1000);
+    this.orthoCamera.position.set(0, 0, 100);
+
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    this.controls = new TrackballControls(this.camera, document.getElementById(args.divID));
     this.zoom = args.zoom;
     this.sunPosition = args.sunPosition;
     this.terrainLoadComplete = args.terrainLoadComplete;
@@ -27,13 +35,21 @@ class Terrain {
 
   initScene () {
     this.scene.background = new THREE.Color('rgb(50%, 50%, 50%)');
-    this.camera.position.set(20, -60, 100);
     let container = document.getElementById(this.containerID);
     this.renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(this.renderer.domElement);
-
     this.addAmbientLight();
     this.addSunLight();
+  }
+
+  setView (view) {
+    if (view === 'ortho') {
+      this.camera = this.orthoCamera;
+      this.controls.enabled = false;
+    } else if (view === 'perspective') {
+      this.camera = this.perspectiveCamera;
+      this.controls.enabled = true;
+    }
   }
 
   addHelpers () {
