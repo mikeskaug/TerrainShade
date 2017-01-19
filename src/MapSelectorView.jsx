@@ -27,15 +27,15 @@ const MapSelectorView = React.createClass({
       this.mapSelector.lon = nextProps.lon;
       this.mapSelector.lat = nextProps.lat;
       this.mapSelector.updateRegionTiles();
+      this.mapSelector.centerMap();
+    }
+    if (nextProps.zoom !== this.props.zoom) {
+      this.mapSelector.zoom = nextProps.zoom;
     }
   },
 
   render: function () {
     return <div className='control map-selector'><svg/></div>;
-  },
-
-  updateMapTiles: function () {
-
   }
 });
 

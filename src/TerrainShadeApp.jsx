@@ -4,6 +4,7 @@ import TerrainView from './TerrainView';
 import MapSelectorView from './MapSelectorView';
 import { hoursTohhmm, hhmmTohours } from './utils';
 import Datetime from 'react-datetime';
+import Geosuggest from 'react-geosuggest';
 import { Button } from 'react-bootstrap';
 
 const TerrainShadeApp = React.createClass({
@@ -41,6 +42,7 @@ const TerrainShadeApp = React.createClass({
                      onChange={this.handleTimeChange}/>
                    <div className='time-label'>{this.state.dateTime.format('h:mma')}</div>
             </div>
+            <Geosuggest onSuggestSelect={this.onLocationSelect}/>
             <MapSelectorView
               lon={this.state.lon}
               lat={this.state.lat}
@@ -83,6 +85,10 @@ const TerrainShadeApp = React.createClass({
     let newDate = this.state.dateTime.clone();
     newDate.set({year: date.year(), month: date.month(), date: date.date()});
     this.setState({dateTime: newDate});
+  },
+
+  onLocationSelect: function (suggest) {
+    this.setState({lon: suggest.location.lng, lat: suggest.location.lat});
   },
 
   handleLocationChange: function (coords) {

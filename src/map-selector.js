@@ -94,17 +94,27 @@ class MapSelector {
       this.updateRegionTiles();
     };
 
-    let Zoom = zoom()
+    this.Zoom = zoom()
         .scaleExtent([1 << 10, 1 << 25])
         .on('zoom', zoomed);
 
     let center = this.projection([this.lon, this.lat]);
     let initialZoom = zoomLevelToMercator(this.zoom - 1);
-    this.svg.call(Zoom)
-        .call(Zoom.transform, zoomIdentity
+    this.svg.call(this.Zoom)
+        .call(this.Zoom.transform, zoomIdentity
             .translate(this.width / 2, this.height / 2)
             .scale(initialZoom)
             .translate(-center[0], -center[1]));
+  }
+
+  centerMap () {
+    let zoomLevel = this.projection.scale() * tau;
+    let newCenter = this.projection([this.lon, this.lat]);
+    let translate = this.projection.translate();
+    this.svg.call(this.Zoom.transform, zoomIdentity
+            .translate(translate[0] - newCenter[0] + this.width / 2,
+              translate[1] - newCenter[1] + this.height / 2)
+            .scale(zoomLevel));
   }
 
   updateImageTiles (transform) {

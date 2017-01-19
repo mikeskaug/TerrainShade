@@ -23,6 +23,7 @@
     "react-bootstrap": "^0.30.7",
     "react-datetime": "^2.6.0",
     "react-dom": "^15.3.2",
+    "react-geosuggest": "^2.1.0",
     "three": "^0.80.1",
     "three-trackballcontrols": "0.0.5",
     "underscore": "^1.8.3",
