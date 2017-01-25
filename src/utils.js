@@ -1,5 +1,6 @@
 import _ from 'underscore';
-
+import 'whatwg-fetch';
+import moment from 'moment';
 
 export let arrayMean = (array) => {
   let sum = _.reduce(array, (memo, num) => {return memo + num;});
@@ -58,4 +59,22 @@ export let hoursTohhmm = (hours) => {
 
 export let hhmmTohours = (hhmm) => {
   return hhmm.hour + hhmm.minute / 60;
+};
+
+export let setLocalTime = (lon, lat, utc, callback) => {
+  let baseURL = 'https://maps.googleapis.com/maps/api/timezone/';
+  let format = 'json';
+  let parameters = '?' + 'location=' + lat + ',' + lon + '&' + 'timestamp=' + utc.format('X');
+  let key = '&key=AIzaSyAsthjhQu3xLChz3XT5aypNKxU_OLyxILE';
+  let url = baseURL + format + parameters + key;
+  fetch(url).then(response => {
+    if (response.status !== 200) {
+      callback(utc);
+      return;
+    }
+    response.json().then(data => {
+      let localDt = utc.clone().utcOffset((data.dstOffset + data.rawOffset) / 60);
+      callback(localDt);
+    });
+  });
 };

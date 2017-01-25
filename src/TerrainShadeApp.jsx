@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import TerrainView from './TerrainView';
 import MapSelectorView from './MapSelectorView';
-import { hoursTohhmm, hhmmTohours } from './utils';
+import { hoursTohhmm, hhmmTohours, setLocalTime } from './utils';
 import Datetime from 'react-datetime';
 import Geosuggest from 'react-geosuggest';
 import { Button } from 'react-bootstrap';
@@ -13,10 +13,14 @@ const TerrainShadeApp = React.createClass({
       lon: -105.250,
       lat: 39.9266,
       zoom: 13,
-      dateTime: moment(),
+      dateTime: moment.utc(),
       terrainLoad: false,
       terrainView: 'perspective'
     };
+  },
+
+  componentWillMount: function () {
+    setLocalTime(this.state.lon, this.state.lat, this.state.dateTime, this.setTime);
   },
 
   render: function () {
@@ -75,6 +79,10 @@ const TerrainShadeApp = React.createClass({
       minute: this.state.dateTime.minute()});
   },
 
+  setTime: function (dt) {
+    this.setState({dateTime: dt});
+  },
+
   handleTimeChange: function (event) {
     let newTime = hoursTohhmm(event.target.value);
     let newDateTime = this.state.dateTime.clone().set(newTime);
@@ -89,10 +97,12 @@ const TerrainShadeApp = React.createClass({
 
   onLocationSelect: function (suggest) {
     this.setState({lon: suggest.location.lng, lat: suggest.location.lat});
+    setLocalTime(suggest.location.lng, suggest.location.lat, this.state.dateTime, this.setTime);
   },
 
   handleLocationChange: function (coords) {
     this.setState({lon: coords[0], lat: coords[1]});
+    setLocalTime(coords[0], coords[1], this.state.dateTime, this.setTime);
   },
 
   handleZoomLevelChange: function (zoom) {
