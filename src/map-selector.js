@@ -49,8 +49,8 @@ const getRegionTiles = (tiles, lon, lat) => {
 
 class MapSelector {
   constructor (args) {
-    this.width = 300;
-    this.height = 200;
+    this.width = select('.map-selector').node().getBoundingClientRect().width;
+    this.height = 2 / 3 * this.width;
     this.lon = args.lon;
     this.lat = args.lat;
     this.zoom = args.zoom;

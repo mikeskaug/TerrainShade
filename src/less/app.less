@@ -59,9 +59,14 @@ body {
   order: 2;
 }
 
-.map-selector rect {
-  stroke: black;
-  stroke-weight: 1px;
+.map-selector {
+  svg {
+    border: 1px solid #ccc;
+  }
+  rect {
+    stroke: black;
+    stroke-weight: 1px;
+  }
 }
 
 .suggest-list {
@@ -81,10 +86,6 @@ body {
 .suggest-item:hover {
   background-color: darken(@suggest-background, 10%);
   cursor: pointer;
-}
-
-.map-selector{
-  border: 1px solid #ccc;
 }
 
 .geosuggest__suggests--hidden {
