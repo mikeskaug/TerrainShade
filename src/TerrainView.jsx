@@ -50,15 +50,7 @@ const TerrainView = React.createClass({
     return <div id='terrain-view'/>;
   },
 
-  backgroundColor: chroma.scale([[128, 128, 128], [255, 255, 255]]).domain([90, 0])
-
-  // backgroundColor: function (sunAngle) {
-  //   let ratio = (90 - sunAngle) / 90;
-  //   let domain = [50, 100];
-  //   let domainDiff = domain[1] - domain[0];
-  //   let value = Math.round(domain[0] + ratio * domainDiff);
-  //   return 'rgb(' + value + '%, ' + value + '%, ' + value + '%)';
-  // }
+  backgroundColor: chroma.scale([[200, 200, 200], [255, 255, 255]]).domain([90, 0])
 });
 
 export default TerrainView;

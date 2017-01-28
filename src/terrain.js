@@ -22,7 +22,7 @@ class Terrain {
     this.controls = new TrackballControls(this.perspectiveCamera,
       document.getElementById(args.divID));
 
-    this.orthoCamera = new THREE.OrthographicCamera(100 / -2, 100 / 2, 100 / 2, 100 / -2, 1, 1000);
+    this.orthoCamera = new THREE.OrthographicCamera(100 / -2, 100 / 2, 100 / 2, 100 / -2, 0, 1000);
     this.orthoCamera.position.set(0, 0, 100);
 
     this.renderer = new THREE.WebGLRenderer();
@@ -37,6 +37,7 @@ class Terrain {
     this.scene.background = new THREE.Color('rgb(50%, 50%, 50%)');
     let container = document.getElementById(this.containerID);
     this.renderer.setSize(container.clientWidth, container.clientHeight);
+    this.rendererInitSize = this.renderer.getSize();
     container.appendChild(this.renderer.domElement);
     this.addAmbientLight();
     this.addSunLight();
@@ -46,8 +47,10 @@ class Terrain {
     if (view === 'ortho') {
       this.camera = this.orthoCamera;
       this.controls.enabled = false;
+      this.renderer.setSize(this.rendererInitSize.width, this.rendererInitSize.width);
     } else if (view === 'perspective') {
       this.camera = this.perspectiveCamera;
+      this.renderer.setSize(this.rendererInitSize.width, this.rendererInitSize.height);
       this.controls.enabled = true;
     }
   }

@@ -99,7 +99,7 @@ class MapSelector {
         .on('zoom', zoomed);
 
     let center = this.projection([this.lon, this.lat]);
-    let initialZoom = zoomLevelToMercator(this.zoom - 1);
+    let initialZoom = zoomLevelToMercator(this.zoom - 1.8);
     this.svg.call(this.Zoom)
         .call(this.Zoom.transform, zoomIdentity
             .translate(this.width / 2, this.height / 2)
