@@ -22,7 +22,7 @@ class Terrain {
     this.controls = new TrackballControls(this.perspectiveCamera,
       document.getElementById(args.divID));
 
-    this.orthoCamera = new THREE.OrthographicCamera(100 / -2, 100 / 2, 100 / 2, 100 / -2, 0, 1000);
+    this.orthoCamera = new THREE.OrthographicCamera(80 / -2, 80 / 2, 80 / 2, 80 / -2, 0, 1000);
     this.orthoCamera.position.set(0, 0, 100);
 
     this.renderer = new THREE.WebGLRenderer();
@@ -35,6 +35,7 @@ class Terrain {
 
   initScene () {
     this.scene.background = new THREE.Color('rgb(50%, 50%, 50%)');
+    this.scene.fog = new THREE.FogExp2(0xffffff, 0.003);
     let container = document.getElementById(this.containerID);
     this.renderer.setSize(container.clientWidth, container.clientHeight);
     this.rendererInitSize = this.renderer.getSize();
@@ -146,7 +147,7 @@ class Terrain {
 
   addSunLight () {
     let sunXYZ = sphericalToCartesian(this.sunPosition);
-    this.sunLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    this.sunLight = new THREE.DirectionalLight(0xffffff, 0.7);
     this.sunLight.position.set(sunXYZ[0], sunXYZ[1], sunXYZ[2]);
     this.sunLight.castShadow = true;
     let dLight = 70;
@@ -166,6 +167,10 @@ class Terrain {
     this.sunPosition = position;
     let sunXYZ = sphericalToCartesian(this.sunPosition);
     this.sunLight.position.set(sunXYZ[0], sunXYZ[1], sunXYZ[2]);
+  }
+
+  setSunColor (cssColor) {
+    this.sunLight.color = new THREE.Color(cssColor);
   }
 
   renderScene () {

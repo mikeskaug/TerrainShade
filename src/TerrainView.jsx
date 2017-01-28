@@ -33,6 +33,7 @@ const TerrainView = React.createClass({
       let angles = solarAngles(this.props.lon, this.props.lat, nextProps.dateTime);
       this.terrain.setSunPosition([35, angles.azimuth, angles.zenith]);
       this.terrain.scene.background.setStyle(this.backgroundColor(angles.zenith).css());
+      this.terrain.setSunColor(this.sunlightColor(angles.zenith).css());
     }
     if (nextProps.terrainLoading && !this.props.terrainLoading) {
       this.terrain.clearTile();
@@ -50,7 +51,8 @@ const TerrainView = React.createClass({
     return <div id='terrain-view'/>;
   },
 
-  backgroundColor: chroma.scale([[200, 200, 200], [255, 255, 255]]).domain([90, 0])
+  backgroundColor: chroma.scale([[200, 200, 200], 'white']).domain([90, 0]),
+  sunlightColor: chroma.scale([[255, 182, 76], 'white', 'white']).domain([90, 70, 0])
 });
 
 export default TerrainView;
