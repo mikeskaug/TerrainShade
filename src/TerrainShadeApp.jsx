@@ -36,7 +36,7 @@ const TerrainShadeApp = React.createClass({
                       closeOnSelect={true}
                       onChange={this.handleDateChange}/>
             <div className='control'>
-              <label htmlFor='hour-slider'>Time</label>
+              <div className='time-label'>{this.state.dateTime.format('h:mma')}</div>
               <input type='range'
                      min='0'
                      max='24'
@@ -44,7 +44,6 @@ const TerrainShadeApp = React.createClass({
                      id='hour-slider'
                      value={this.getFractionalHours()}
                      onChange={this.handleTimeChange}/>
-                   <div className='time-label'>{this.state.dateTime.format('h:mma')}</div>
             </div>
             <div className='control'>
               <MapSelectorView
@@ -63,7 +62,9 @@ const TerrainShadeApp = React.createClass({
             </div>
           </div>
           <div className='terrain-view'>
-            <Button bsSize='large' onClick={this.handleTerrainRefresh}>Refresh</Button>
+            <Button onClick={this.handleTerrainRefresh}>
+              <i className='material-icons md-36'>refresh</i>
+            </Button>
             <Button onClick={this.handleSwitchToPerspectiveView}
                     active={this.state.terrainView === 'perspective'}>Perspective</Button>
             <Button onClick={this.handleSwitchToOrthoView}
