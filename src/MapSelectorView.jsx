@@ -35,7 +35,7 @@ const MapSelectorView = React.createClass({
   },
 
   render: function () {
-    return <div className='control map-selector'><svg/></div>;
+    return <div className='map-selector'><svg/></div>;
   }
 });
 

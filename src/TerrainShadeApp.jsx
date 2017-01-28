@@ -46,13 +46,21 @@ const TerrainShadeApp = React.createClass({
                      onChange={this.handleTimeChange}/>
                    <div className='time-label'>{this.state.dateTime.format('h:mma')}</div>
             </div>
-            <Geosuggest onSuggestSelect={this.onLocationSelect}/>
-            <MapSelectorView
-              lon={this.state.lon}
-              lat={this.state.lat}
-              zoom={this.state.zoom}
-              updateLocation={this.handleLocationChange}
-              updateZoom={this.handleZoomLevelChange}/>
+            <div className='control'>
+              <MapSelectorView
+                lon={this.state.lon}
+                lat={this.state.lat}
+                zoom={this.state.zoom}
+                updateLocation={this.handleLocationChange}
+                updateZoom={this.handleZoomLevelChange}/>
+              <Geosuggest
+                ref={ el => {this.geoSuggest = el;}}
+                onFocus={this.handleGeoSuggestFocus}
+                onBlur={this.handleGeoSuggestBlur}
+                onSuggestSelect={this.onLocationSelect}
+                suggestsClassName='suggest-list'
+                suggestItemClassName='suggest-item'/>
+            </div>
           </div>
           <div className='terrain-view'>
             <Button bsSize='large' onClick={this.handleTerrainRefresh}>Refresh</Button>
@@ -123,6 +131,14 @@ const TerrainShadeApp = React.createClass({
 
   handleSwitchToPerspectiveView: function () {
     this.setState({terrainView: 'perspective'});
+  },
+
+  handleGeoSuggestFocus: function () {
+    this.geoSuggest.focus();
+  },
+
+  handleGeoSuggestBlur: function () {
+    this.geoSuggest.blur();
   }
 
 });

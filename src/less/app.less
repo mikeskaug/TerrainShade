@@ -1,5 +1,7 @@
 @import (css) "./react-datetime.css";
 
+@suggest-background: #fff;
+
 body {
   font-family: 'Arial';
 }
@@ -40,6 +42,7 @@ body {
 }
 
 .control {
+  position: relative;
   padding: 20px 0;
 }
 
@@ -59,4 +62,33 @@ body {
 .map-selector rect {
   stroke: black;
   stroke-weight: 1px;
+}
+
+.suggest-list {
+  background: @suggest-background;
+  list-style-type: none;
+  padding: 0;
+  border-radius: 5px;
+}
+
+.suggest-item {
+  padding: 4px;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: #f0f0f0;
+}
+
+.suggest-item:hover {
+  background-color: darken(@suggest-background, 10%);
+  cursor: pointer;
+}
+
+.map-selector{
+  border: 1px solid #ccc;
+}
+
+.geosuggest__suggests--hidden {
+  max-height: 0;
+  overflow: hidden;
+  border-width: 0;
 }
