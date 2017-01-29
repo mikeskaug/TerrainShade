@@ -7,6 +7,9 @@ import Datetime from 'react-datetime';
 import Geosuggest from 'react-geosuggest';
 import { Button } from 'react-bootstrap';
 
+let orthoIcon = require('file-loader!./assets/ortho_icon.svg');
+let perspectiveIcon = require('file-loader!./assets/perspective_icon.svg');
+
 const TerrainShadeApp = React.createClass({
   getInitialState: function () {
     return {
@@ -66,9 +69,13 @@ const TerrainShadeApp = React.createClass({
               <i className='material-icons md-36'>refresh</i>
             </Button>
             <Button onClick={this.handleSwitchToPerspectiveView}
-                    active={this.state.terrainView === 'perspective'}>Perspective</Button>
+                    active={this.state.terrainView === 'perspective'}>
+                    <img width='70%' height='70%' src={perspectiveIcon}/>
+            </Button>
             <Button onClick={this.handleSwitchToOrthoView}
-                    active={this.state.terrainView === 'ortho'}>Ortho</Button>
+                    active={this.state.terrainView === 'ortho'}>
+                    <img width='70%' height='70%' src={orthoIcon}/>
+            </Button>
             <TerrainView
               lon={this.state.lon}
               lat={this.state.lat}
