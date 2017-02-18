@@ -65,17 +65,6 @@ const TerrainShadeApp = React.createClass({
             </div>
           </div>
           <div className='terrain-view'>
-            <Button onClick={this.handleTerrainRefresh}>
-              <i className='material-icons md-36'>refresh</i>
-            </Button>
-            <Button onClick={this.handleSwitchToPerspectiveView}
-                    active={this.state.terrainView === 'perspective'}>
-                    <img width='70%' height='70%' src={perspectiveIcon}/>
-            </Button>
-            <Button onClick={this.handleSwitchToOrthoView}
-                    active={this.state.terrainView === 'ortho'}>
-                    <img width='70%' height='70%' src={orthoIcon}/>
-            </Button>
             <TerrainView
               lon={this.state.lon}
               lat={this.state.lat}
@@ -84,6 +73,23 @@ const TerrainShadeApp = React.createClass({
               terrainLoading={this.state.terrainLoad}
               terrainLoadComplete={this.handleTerrainLoadComplete}
               terrainView={this.state.terrainView}/>
+            <div className='overlay'>
+              <Button className='refresh' onClick={this.handleTerrainRefresh}>
+                <span>Reload</span><i className='material-icons md-36'>refresh</i>
+              </Button>
+              <div className='flright'>
+                <Button onClick={this.handleSwitchToPerspectiveView}
+                        bsClass='perspective-selector btn'
+                        active={this.state.terrainView === 'perspective'}>
+                        <img width='60%' height='60%' src={perspectiveIcon}/>
+                </Button>
+                <Button onClick={this.handleSwitchToOrthoView}
+                        bsClass='ortho-selector btn'
+                        active={this.state.terrainView === 'ortho'}>
+                        <img width='65%' height='65%' src={orthoIcon}/>
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
