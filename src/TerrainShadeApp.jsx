@@ -29,9 +29,10 @@ const TerrainShadeApp = React.createClass({
   render: function () {
     return (
       <div>
-        <div className='header'><h2>TerrainShade</h2></div>
+        <div className='header'><h1>TerrainShade</h1></div>
         <div className='content'>
           <div className='control-panel'>
+            <div className='label'>Date</div>
             <Datetime value={this.state.dateTime}
                       dateFormat='MMM D YYYY'
                       timeFormat={false}
@@ -39,6 +40,7 @@ const TerrainShadeApp = React.createClass({
                       closeOnSelect={true}
                       onChange={this.handleDateChange}/>
             <div className='control'>
+              <div className='label'>Time</div>
               <div className='time-label'>{this.state.dateTime.format('h:mma')}</div>
               <input type='range'
                      min='0'
@@ -49,6 +51,7 @@ const TerrainShadeApp = React.createClass({
                      onChange={this.handleTimeChange}/>
             </div>
             <div className='control'>
+              <div className='location label'>Location</div>
               <MapSelectorView
                 lon={this.state.lon}
                 lat={this.state.lat}
@@ -77,7 +80,7 @@ const TerrainShadeApp = React.createClass({
               <Button className='refresh' onClick={this.handleTerrainRefresh}>
                 <span>Reload</span><i className='material-icons md-36'>refresh</i>
               </Button>
-              <div className='flright'>
+              <div className='flright static'>
                 <Button onClick={this.handleSwitchToPerspectiveView}
                         bsClass='perspective-selector btn'
                         active={this.state.terrainView === 'perspective'}>

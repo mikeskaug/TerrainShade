@@ -42,6 +42,10 @@ body {
   margin: 4px;
   padding: 5px;
   min-height: 50px;
+
+  h1 {
+    font-size: 45px;
+  }
 }
 
 .control-panel {
@@ -50,6 +54,21 @@ body {
   padding: 15px;
   flex: 1 6 30%;
   order: 1;
+
+  .label {
+    display: block;
+    padding-bottom: 5px;
+    color: rgb(50%, 50%, 50%);
+    border-bottom: 2px solid rgb(85%, 85%, 85%);
+    border-radius: 0;
+    text-align: left;
+    font-size: 125%;
+    font-weight: lighter;
+  }
+
+  .location.label {
+    margin-bottom: 15px;
+  }
 }
 
 .control {
@@ -65,7 +84,7 @@ body {
 .terrain-view {
   position: relative;
   margin: 4px;
-  flex: 3 1 70%;
+  flex: 1 1 70%;
   order: 2;
 }
 
@@ -120,4 +139,18 @@ body {
 
 .flright {
   float: right;
+}
+
+.static {
+  position: static;
+}
+
+@media (max-width: 640px), handheld {
+  .content {
+      flex-direction: column;
+  }
+
+  .control-panel, .terrain-view {
+      order: 0;
+  }
 }
