@@ -1,6 +1,7 @@
 @import (css) "./react-datetime.css";
 
 @suggest-background: #fff;
+@light-gray: #f0f0f0;
 
 body {
   font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
@@ -49,25 +50,24 @@ body {
 }
 
 .control-panel {
-  background: #f0f0f0;
+  background: @light-gray;
   margin: 4px;
   padding: 15px;
   flex: 1 6 30%;
   order: 1;
+  border-radius: 4px;
 
   .label {
     display: block;
     padding-bottom: 5px;
-    color: rgb(50%, 50%, 50%);
-    border-bottom: 2px solid rgb(85%, 85%, 85%);
-    border-radius: 0;
+    color: darken(@light-gray, 20%);
     text-align: left;
     font-size: 125%;
     font-weight: lighter;
   }
 
-  .location.label {
-    margin-bottom: 15px;
+  .date.label {
+    transform: translateY(15px);
   }
 }
 
@@ -76,9 +76,25 @@ body {
   padding: 20px 0;
 }
 
+.rdt.control {
+  input {
+    font-size: 36px;
+    height: 50px;
+    font-family: 'Overpass Mono', sans-serif;
+  }
+}
+
 .time-label {
   font-family: 'Overpass Mono', sans-serif;
-  font-size: 40px;
+  font-size: 36px;
+  color: #555;
+
+  background-color: #fff;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  line-height: 1;
+  margin: 5px 0;
 }
 
 .terrain-view {
@@ -90,10 +106,10 @@ body {
 
 .map-selector {
   svg {
-    border: 1px solid #ccc;
+    border: 2px solid darken(@light-gray, 60%);
   }
   rect {
-    stroke: black;
+    stroke: darken(@light-gray, 40%);
     stroke-weight: 1px;
   }
 }
@@ -139,10 +155,6 @@ body {
 
 .flright {
   float: right;
-}
-
-.static {
-  position: static;
 }
 
 @media (max-width: 640px), handheld {

@@ -32,7 +32,7 @@ const TerrainShadeApp = React.createClass({
         <div className='header'><h1>TerrainShade</h1></div>
         <div className='content'>
           <div className='control-panel'>
-            <div className='label'>Date</div>
+            <div className='date label'>Date</div>
             <Datetime value={this.state.dateTime}
                       dateFormat='MMM D YYYY'
                       timeFormat={false}
@@ -80,7 +80,7 @@ const TerrainShadeApp = React.createClass({
               <Button className='refresh' onClick={this.handleTerrainRefresh}>
                 <span>Reload</span><i className='material-icons md-36'>refresh</i>
               </Button>
-              <div className='flright static'>
+              <div className='flright'>
                 <Button onClick={this.handleSwitchToPerspectiveView}
                         bsClass='perspective-selector btn'
                         active={this.state.terrainView === 'perspective'}>
