@@ -29,7 +29,7 @@ const TerrainShadeApp = React.createClass({
   render: function () {
     return (
       <div>
-        <div className='header'><h1>TerrainShade</h1></div>
+        <div className='header'><div className='title'>TerrainShade</div></div>
         <div className='content'>
           <div className='control-panel'>
             <div className='date label'>Date</div>
