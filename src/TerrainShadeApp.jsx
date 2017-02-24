@@ -80,7 +80,7 @@ const TerrainShadeApp = React.createClass({
               <Button className='refresh' onClick={this.handleTerrainRefresh}>
                 <span>Reload</span><i className='material-icons md-36'>refresh</i>
               </Button>
-              <div className='flright'>
+              <div className='camera-selectors'>
                 <Button onClick={this.handleSwitchToPerspectiveView}
                         bsClass='perspective-selector btn'
                         active={this.state.terrainView === 'perspective'}>

@@ -51,7 +51,7 @@ const TerrainView = React.createClass({
     return <div id='terrain-view'/>;
   },
 
-  backgroundColor: chroma.scale([[200, 200, 200], 'white']).domain([90, 0]),
+  backgroundColor: chroma.scale([chroma(208, 0.1, 0.7, 'hsl'), chroma(208, 0.5, 0.98, 'hsl')]).domain([90, 0]),
   sunlightColor: chroma.scale([[255, 182, 76], 'white', 'white']).domain([90, 70, 0])
 });
 
