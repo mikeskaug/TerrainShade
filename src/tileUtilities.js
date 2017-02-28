@@ -5,7 +5,7 @@ import { degreesToMeters } from './utils';
 
 const baseElevationURL = 'https://tile.mapzen.com/mapzen/terrain/v1/terrarium';
 const baseImageURL = 'http://tile.stamen.com/terrain';
-const baseElevationAPIKEY = "mapzen-xxxxxxx" // get your key here: http://mapzen.com/developers
+const mapzenAPIKey = 'mapzen-xgFQNhL';
 
 export const long2tile = (lon, zoom) => {
   return (Math.floor((lon + 180) / 360 * Math.pow(2, zoom)));
@@ -19,7 +19,7 @@ export const lat2tile = (lat, zoom) => {
 export const fetchElevationTile = (lon, lat, zoom) => {
   let x = long2tile(lon, zoom);
   let y = lat2tile(lat, zoom);
-  let url = baseElevationURL + '/' + zoom + '/' + x + '/' + y + '.png' + '?api_key=' + baseElevationAPIKEY;
+  let url = baseElevationURL + '/' + zoom + '/' + x + '/' + y + '.png' + '?api_key=' + mapzenAPIKey;
 
   return fetch(url);
 };
