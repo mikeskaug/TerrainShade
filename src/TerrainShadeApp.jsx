@@ -13,9 +13,9 @@ let perspectiveIcon = require('file-loader!./assets/perspective_icon.svg');
 const TerrainShadeApp = React.createClass({
   getInitialState: function () {
     return {
-      lon: -105.250,
-      lat: 39.9266,
-      zoom: 13,
+      lon: 7.659876,
+      lat: 45.976582,
+      zoom: 11,
       dateTime: moment.utc(),
       terrainLoad: false,
       terrainView: 'perspective'
