@@ -5,10 +5,24 @@ import MapSelectorView from './MapSelectorView';
 import { hoursTohhmm, hhmmTohours, setLocalTime } from './utils';
 import Datetime from 'react-datetime';
 import Geosuggest from 'react-geosuggest';
-import { Button } from 'react-bootstrap';
+import { Button, Popover, OverlayTrigger } from 'react-bootstrap';
 
 let orthoIcon = require('file-loader!./assets/ortho_icon.svg');
 let perspectiveIcon = require('file-loader!./assets/perspective_icon.svg');
+
+const creditPopover = (
+  <Popover id='popover-positioned-right' title='Credit'>
+    <strong>Elevation data:</strong>
+      <a href='https://mapzen.com/documentation/terrain-tiles/'> Mapzen</a>,
+      U.S. Geological Survey,
+      and U.S. National Oceanic and Atmospheric Administration
+    <br/>
+    <strong>Imagery:</strong> <a href='http://stamen.com'>Stamen Design</a>,
+      under <a href='http://creativecommons.org/licenses/by/3.0'>CC BY 3.0</a>.
+      Data by <a href='http://openstreetmap.org'>OpenStreetMap</a>,
+      under <a href='http://www.openstreetmap.org/copyright'>ODbL</a>.
+  </Popover>
+);
 
 const TerrainShadeApp = React.createClass({
   getInitialState: function () {
@@ -66,6 +80,9 @@ const TerrainShadeApp = React.createClass({
                 suggestsClassName='suggest-list'
                 suggestItemClassName='suggest-item'/>
             </div>
+            <OverlayTrigger trigger='click' rootClose placement='right' overlay={creditPopover}>
+              <i className='credit material-icons md-36'>info_outline</i>
+            </OverlayTrigger>
           </div>
           <div className='terrain-view'>
             <TerrainView
