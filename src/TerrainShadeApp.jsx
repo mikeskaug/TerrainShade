@@ -36,8 +36,15 @@ const TerrainShadeApp = React.createClass({
     };
   },
 
-  componentWillMount: function () {
-    setLocalTime(this.state.lon, this.state.lat, this.state.dateTime, this.setTime);
+  componentDidMount: function () {
+    this.runIntroAnimation();
+  },
+
+  componentWillUpdate: function (nextProps, nextState) {
+    if (nextState.dateTime.isAfter(this.endDateTime)) {
+      // stop the animation
+      clearInterval(this.timer1);
+    }
   },
 
   render: function () {
@@ -123,6 +130,22 @@ const TerrainShadeApp = React.createClass({
 
   setTime: function (dt) {
     this.setState({dateTime: dt});
+  },
+
+  runIntroAnimation: function () {
+    let startDateTime = moment.utc().hour(12);
+    let interval = 4; // hours of daylight change to animate
+    let duration = 3000; // total duration of animation in milliseconds
+    let dt = 0.1; // time step of the animation in milliseconds
+    let dh = interval / duration / dt; // time change during each animation step in hours
+    this.endDateTime = startDateTime.clone().add(interval, 'h');
+
+    let incrementTime = () => {
+      this.setState({dateTime: this.state.dateTime.clone().add(dh, 'h')});
+    };
+
+    this.setState({dateTime: startDateTime});
+    this.timer1 = setInterval(incrementTime, dt);
   },
 
   handleTimeChange: function (event) {
