@@ -7,7 +7,9 @@ TerrainShade is an interactive web application that lets you see where there's s
 
 These are the questions that TerrainShade will help answer.
 
-![](./src/assets/SunAnimation.gif)
+###[Live Demo](http://michaelskaug.com/projects/TerrainShade/)
+
+![](./src/assets/screenshot.png)
 
 ### Under The Hood
 
